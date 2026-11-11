@@ -1,0 +1,8 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v41
+_src_path: gh:valterschutz/maven-template
+artifact_id: game
+group_id: se.chalmers.team15
+java_version: 21
+main_class: Main
+project_name: Game

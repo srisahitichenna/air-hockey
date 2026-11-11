@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: se.chalmers.team15.game.model.ModelTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in se.chalmers.team15.game.model.ModelTest

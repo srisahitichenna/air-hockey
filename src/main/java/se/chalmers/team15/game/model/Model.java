@@ -14,6 +14,12 @@ public class Model {
     }
   }
 
+  private final Rink rink = new Rink(1600, 800, 80);
+
+  public Rink getRink() {
+    return rink;
+  }
+
   /** In pixels per second. */
   public record Velocity(float x, float y) {}
 

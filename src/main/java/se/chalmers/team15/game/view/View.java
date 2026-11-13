@@ -10,6 +10,8 @@ import se.chalmers.team15.game.model.Model.Size;
 public class View {
   private final Model model;
 
+  private final RinkView rinkView = new RinkView();
+
   public View(Model model) {
     this.model = model;
   }
@@ -20,7 +22,8 @@ public class View {
 
   private void draw() {
     BeginDrawing();
-    ClearBackground(RAYWHITE);
+    ClearBackground(BLACK);
+    rinkView.drawRink(model.getRink());
     Position position = model.getPosition();
     Size size = model.getSize();
     DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);

@@ -7,7 +7,7 @@ import se.chalmers.team15.game.model.Model.Velocity;
 
 public class Controller {
   /** Speed while an arrow key is held, in pixels per second. */
-  private static final float SPEED = 200f;
+  private static final float SPEED = 60f;
 
   private enum Key {
     LEFT(KEY_LEFT, -1, 0),

@@ -1,5 +1,11 @@
 package se.chalmers.team15.game.model;
 
+import java.util.Vector;
+
+import com.raylib.Raylib.Vector2;
+
+import se.chalmers.team15.game.model.Model.Velocity;
+
 public class Model {
   /** In pixels, measured from the top-left corner of the window. */
   public record Position(float x, float y) {
@@ -16,10 +22,11 @@ public class Model {
 
   private Position position;
   private Velocity velocity;
+  private Velocity speed = new Velocity(0, 0);
   private final Size size;
 
   public Model() {
-    this(new Position(100, 100), new Velocity(0, 0), new Size(200, 150));
+    this(new Position(100, 100), new Velocity(0, 0), new Size(80, 80));
   }
 
   public Model(Position position, Velocity velocity, Size size) {
@@ -30,7 +37,8 @@ public class Model {
 
   /** Advances the simulation by {@code dt} seconds. */
   public void update(float dt) {
-    position = position.moveBy(velocity, dt);
+    speed = new Velocity(speed.x() * 0.99f + velocity.x(), speed.y() * 0.99f + velocity.y());
+    position = position.moveBy(speed, dt);
   }
 
   public void setVelocity(Velocity velocity) {

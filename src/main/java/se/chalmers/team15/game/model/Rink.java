@@ -12,11 +12,14 @@ public class Rink {
     }
 
     public float getWidth() {
-        return width; }
+        return width;
+    }
 
     public float getHeight() {
-        return height; }
+        return height;
+    }
 
     public float getCornerRadius() {
-        return cornerRadius; }
+        return cornerRadius;
+    }
 }

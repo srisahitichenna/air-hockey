@@ -20,6 +20,12 @@ public class Model {
     return rink;
   }
 
+  private final Puck puck = new Puck(300, 300);
+
+  public Puck getPuck() {
+    return puck;
+  }
+
   /** In pixels per second. */
   public record Velocity(float x, float y) {
   }

@@ -12,6 +12,8 @@ public class View {
 
   private final RinkView rinkView = new RinkView();
 
+  private final ScoreView scoreView = new ScoreView(rinkView);
+
   public View(Model model) {
     this.model = model;
   }
@@ -39,6 +41,7 @@ public class View {
     Position position = model.getPosition();
     Size size = model.getSize();
     DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);
+    scoreView.drawScore(model);
     EndDrawing();
   }
 

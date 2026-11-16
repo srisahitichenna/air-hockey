@@ -18,8 +18,23 @@ public class Model {
 
   private final Score score = new Score();
 
-  public score getScore() {
+  public Score getScore() {
     return score;
+  }
+
+  public void goalRight() {
+    score.addPlayer1();
+    ;
+  }
+
+  public void goalLeft() {
+    score.addPlayer2();
+  }
+
+  public void restartGame() {
+    score.resetScore();
+    // reset puck
+    // reset strikers
   }
 
   /** In pixels per second. */

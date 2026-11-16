@@ -8,9 +8,18 @@ import java.awt.*;
 import se.chalmers.team15.game.model.Rink;
 
 public class RinkView {
+
+  public float getOffsetX(Rink rink) {
+    return (GetScreenWidth() - rink.getWidth()) / 2f;
+  }
+
+  public float getOffsetY(Rink rink) {
+    return (GetScreenHeight() - rink.getHeight()) / 2f;
+  }
+
   public void drawRink(Rink rink) {
-    float offsetX = (GetScreenWidth() - rink.getWidth()) / 2f;
-    float offsetY = (GetScreenHeight() - rink.getHeight()) / 2f;
+    float offsetX = getOffsetX(rink);
+    float offsetY = getOffsetY(rink);
 
     float roundness = rink.getCornerRadius() / (Math.min(rink.getWidth(), rink.getHeight()) / 2f);
 

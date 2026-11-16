@@ -26,7 +26,7 @@ public class View {
      * Position position = model.getPosition();
      * DrawCircle((int) position.x(), (int) position.y(), 1, MAROON);
      * EndDrawing();
-     * 
+     *
      * This is a bad code, we need to implement this better
      * i just tried to experiment - Charlie
      */

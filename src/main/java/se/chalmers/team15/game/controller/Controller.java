@@ -47,8 +47,4 @@ public class Controller {
     }
     model.setVelocity(new Velocity(xVelocity, yVelocity));
   }
-
-  /*
-   * Test
-   */
 }

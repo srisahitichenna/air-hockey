@@ -6,6 +6,7 @@ import static com.raylib.Raylib.*;
 import se.chalmers.team15.game.model.Model;
 import se.chalmers.team15.game.model.Model.Position;
 import se.chalmers.team15.game.model.Model.Size;
+import se.chalmers.team15.game.model.Puck;
 
 public class View {
   private final Model model;
@@ -19,7 +20,10 @@ public class View {
   }
 
   public void update() {
+    BeginDrawing();
     drawMap();
+    drawPuck();
+    EndDrawing();
   }
 
   public void drawPlayers() {
@@ -40,7 +44,6 @@ public class View {
   }
 
   private void drawMap() {
-    BeginDrawing();
     ClearBackground(BLACK);
     rinkView.drawRink(model.getRink());
       Position p = model.getPosition();
@@ -57,11 +60,20 @@ public class View {
   }
 
   public void drawPuck() {
-    BeginDrawing();
-    /*
-     * Not done
-     */
-    EndDrawing();
+    Puck puck = model.getPuck();
+    Position position = puck.getPosition();
+    float radius = puck.getRadius();
+
+    DrawCircle(
+        (int) position.x(),
+        (int) position.y(),
+        (int) radius,
+        BLACK);
+    DrawCircle(
+        (int) position.x(),
+        (int) position.y(),
+        (int) 40,
+        DARKGRAY);
   }
 
   public void drawScore() {

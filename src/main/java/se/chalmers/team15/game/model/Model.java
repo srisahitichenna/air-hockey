@@ -20,7 +20,7 @@ public class Model {
     return rink;
   }
 
-  private final Puck puck = new Puck(300, 300);
+  private final Puck puck = new Puck(900, 450);
 
   public Puck getPuck() {
     return puck;

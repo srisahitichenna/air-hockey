@@ -13,6 +13,8 @@ public class View {
 
   private final RinkView rinkView = new RinkView();
 
+  private final ScoreView scoreView = new ScoreView(rinkView);
+
   public View(Model model) {
     this.model = model;
   }
@@ -30,18 +32,31 @@ public class View {
      * Position position = model.getPosition();
      * DrawCircle((int) position.x(), (int) position.y(), 1, MAROON);
      * EndDrawing();
-     * 
+     *
      * This is a bad code, we need to implement this better
      * i just tried to experiment - Charlie
+     *
+     *
      */
+
+
+
   }
 
   private void drawMap() {
     ClearBackground(BLACK);
     rinkView.drawRink(model.getRink());
-    Position position = model.getPosition();
+      Position p = model.getPosition();
+      DrawCircle((int) p.x(), (int) p.y(), 50, MAROON);
+      DrawCircle((int) p.x(), (int) p.y(), 20, RED);
+      System.out.println(p.x() + ", " + p.y());
+
+      //the code below was for the original square striker
+    /*Position position = model.getPosition();
     Size size = model.getSize();
     DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);
+    scoreView.drawScore(model);
+    EndDrawing();
   }
 
   public void drawPuck() {

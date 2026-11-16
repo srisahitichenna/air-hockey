@@ -1,9 +1,5 @@
 package se.chalmers.team15.game.model;
 
-import java.util.Vector;
-
-import com.raylib.Raylib.Vector2;
-
 import se.chalmers.team15.game.model.Model.Velocity;
 
 public class Model {
@@ -27,16 +23,37 @@ public class Model {
   }
 
   /** In pixels per second. */
-  public record Velocity(float x, float y) {
+  public record Velocity(float x, float y) {}
+  
+  private final Score score = new Score();
+
+  public Score getScore() {
+    return score;
+  
+
+  public void goalRight() {
+    score.addPlayer1();
+    ;
   }
 
-  /** In pixels. */
-  public record Size(int width, int height) {
+  public void goalLeft() {
+    score.addPlayer2();
   }
+
+  public void restartGame() {
+    score.resetScore();
+    // reset puck
+    // reset strikers
+  }
+
+  /** In pixels per second. */
+  public record Velocity(float x, float y) {}
+
+  /** In pixels. */
+  public record Size(int width, int height) {}
 
   private Position position;
   private Velocity velocity;
-  private Integer score;
   private Velocity speed = new Velocity(0, 0);
   private final Size size;
 
@@ -66,10 +83,6 @@ public class Model {
 
   public Velocity getVelocity() {
     return velocity;
-  }
-
-  public Integer getScore() {
-    return score;
   }
 
   public Size getSize() {

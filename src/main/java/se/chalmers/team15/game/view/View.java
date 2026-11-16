@@ -12,6 +12,8 @@ public class View {
 
   private final RinkView rinkView = new RinkView();
 
+  private final ScoreView scoreView = new ScoreView(rinkView);
+
   public View(Model model) {
     this.model = model;
   }
@@ -26,7 +28,7 @@ public class View {
      * Position position = model.getPosition();
      * DrawCircle((int) position.x(), (int) position.y(), 1, MAROON);
      * EndDrawing();
-     * 
+     *
      * This is a bad code, we need to implement this better
      * i just tried to experiment - Charlie
      *
@@ -49,7 +51,8 @@ public class View {
       //the code below was for the original square striker
     /*Position position = model.getPosition();
     Size size = model.getSize();
-    DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);*/
+    DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);
+    scoreView.drawScore(model);
     EndDrawing();
   }
 

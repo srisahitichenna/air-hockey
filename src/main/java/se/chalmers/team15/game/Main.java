@@ -12,14 +12,6 @@ public class Main {
   private static final int FRAMES_PER_SECOND = 60;
   private static final String TITLE = "Game";
 
-  public static int getScreenWidth() {
-    return SCREEN_WIDTH;
-  }
-
-  public static int getScreenHeight() {
-    return SCREEN_HEIGHT;
-  }
-
   public static void main(String[] args) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, TITLE);
     SetTargetFPS(FRAMES_PER_SECOND);

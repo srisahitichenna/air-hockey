@@ -9,6 +9,10 @@ public class Model {
       return new Position(x + velocity.x() * dt, y + velocity.y() * dt);
     }
   }
+  
+  /** In pixels per second. */
+  public record Direction(float x, float y) {
+  }
 
   private final Rink rink = new Rink(1600, 800, 80);
 
@@ -20,10 +24,6 @@ public class Model {
 
   public Puck getPuck() {
     return puck;
-  }
-
-  /** In pixels per second. */
-  public record Velocity(float x, float y) {
   }
 
   private final Score score = new Score();

@@ -1,8 +1,5 @@
 package se.chalmers.team15.game.model;
 
-import se.chalmers.team15.game.model.Model.Direction;
-import se.chalmers.team15.game.model.Puck;
-
 public class Model {
   /** In pixels, measured from the top-left corner of the window. */
   public record Position(float x, float y) {
@@ -48,29 +45,22 @@ public class Model {
     // reset strikers
   }
 
-  /** In pixels. */
-  public record Size(int width, int height) {
-  }
-
-  private Position position;
   private Direction direction;
-  private Direction speed = new Direction(0, 0);
-  private final Size size;
 
   public Model() {
-    this(new Position(1350, 450), new Direction(0, 0), new Size(80, 80));
+    this(new Direction(0, 0));
   }
 
-  public Model(Position position, Direction velocity, Size size) {
-    this.position = position;
-    this.direction = velocity;
-    this.size = size;
+  public Model(Direction direction) {
+    this.direction = direction;
   }
 
   /** Advances the simulation by {@code dt} seconds. */
   public void update(float dt) {
-    speed = new Direction(speed.x() * 0.99f + direction.x(), speed.y() * 0.99f + direction.y());
-    position = position.moveBy(speed, dt);
+    puck.setPosition(puck.getPosition().moveBy(puck.getDirection(), puck.getSpeed()));
+    puck.setSpeed();
+    puck.setDirection();
+    //speed = new Direction(speed.x() * 0.99f + direction.x(), speed.y() * 0.99f + direction.y());
 
     if (puck.getPosition().y() < 100 || puck.getPosition().y() > 1000) {
       puck.setDirection(puck.getDirection().x(), puck.getDirection().y() * -1);
@@ -83,17 +73,5 @@ public class Model {
 
   public void setDirection(Direction direction) {
     this.direction = direction;
-  }
-
-  public Position getPosition() {
-    return position;
-  }
-
-  public Direction getDirection() {
-    return direction;
-  }
-
-  public Size getSize() {
-    return size;
   }
 }

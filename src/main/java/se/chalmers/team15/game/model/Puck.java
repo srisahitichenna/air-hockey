@@ -19,6 +19,10 @@ public class Puck {
     public Model.Position getPosition() {
         return position;
     }
+    
+    public void setPosition(Model.Position position) {
+        this.position = position;
+    }
 
     public Model.Direction getDirection() {
         return direction;

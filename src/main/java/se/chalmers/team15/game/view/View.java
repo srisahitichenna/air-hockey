@@ -5,15 +5,14 @@ import static com.raylib.Raylib.*;
 
 import se.chalmers.team15.game.model.Model;
 import se.chalmers.team15.game.model.Model.Position;
-import se.chalmers.team15.game.model.Model.Size;
 import se.chalmers.team15.game.model.Puck;
 
 public class View {
   private final Model model;
 
   private final RinkView rinkView = new RinkView();
-
   private final ScoreView scoreView = new ScoreView(rinkView);
+  private final TimerView timerView = new TimerView();
 
   public View(Model model) {
     this.model = model;
@@ -23,6 +22,7 @@ public class View {
     BeginDrawing();
     drawMap();
     drawPuck();
+    drawScore();
     EndDrawing();
   }
 
@@ -55,19 +55,15 @@ public class View {
     Position position = puck.getPosition();
     float radius = puck.getRadius();
 
-    DrawCircle(
-        (int) position.x(),
-        (int) position.y(),
-        (int) radius,
-        BLACK);
-    DrawCircle(
-        (int) position.x(),
-        (int) position.y(),
-        (int) 40,
-        DARKGRAY);
+    DrawCircle((int) position.x(), (int) position.y(), (int) radius, BLACK);
+    DrawCircle((int) position.x(), (int) position.y(), (int) 40, DARKGRAY);
   }
 
   public void drawScore() {
-    scoreView.drawScore(model);;
+    scoreView.drawScore(model);
+  }
+
+  public void drawTimer() {
+    timerView.drawTimer();
   }
 }

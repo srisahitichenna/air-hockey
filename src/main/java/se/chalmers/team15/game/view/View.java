@@ -39,24 +39,15 @@ public class View {
      *
      */
 
-
-
   }
 
   private void drawMap() {
     ClearBackground(BLACK);
     rinkView.drawRink(model.getRink());
-      Position p = model.getPosition();
-      DrawCircle((int) p.x(), (int) p.y(), 50, MAROON);
-      DrawCircle((int) p.x(), (int) p.y(), 20, RED);
-      System.out.println(p.x() + ", " + p.y());
-
-      //the code below was for the original square striker
-    /*Position position = model.getPosition();
-    Size size = model.getSize();
-    DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);
-    scoreView.drawScore(model);
-    EndDrawing();
+    Position p = model.getPosition();
+    DrawCircle((int) p.x(), (int) p.y(), 50, MAROON);
+    DrawCircle((int) p.x(), (int) p.y(), 20, RED);
+    System.out.println(p.x() + ", " + p.y());
   }
 
   public void drawPuck() {
@@ -77,10 +68,5 @@ public class View {
   }
 
   public void drawScore() {
-    BeginDrawing();
-    /*
-     * Not done
-     */
-    EndDrawing();
   }
 }

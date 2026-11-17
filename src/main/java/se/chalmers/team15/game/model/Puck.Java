@@ -12,6 +12,18 @@ public class Puck {
     public Puck(float xPos, float yPos) {
         this.position = new Model.Position(xPos, yPos);
         this.velocity = new Model.Velocity(0, 0);
+
+        /*
+         * if (position.y() == 100 || position.y() == 1000) {
+         * this.velocity = new Model.Velocity(this.velocity.x(), this.velocity.y() *
+         * -1);
+         * }
+         * 
+         * if (position.x() == 100 || position.x() == 2000) {
+         * this.velocity = new Model.Velocity(this.velocity.x() * -1,
+         * this.velocity.y());
+         * }
+         */
     }
 
     // Getters

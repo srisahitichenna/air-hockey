@@ -1,7 +1,6 @@
 package se.chalmers.team15.game.model;
 
 public class Puck {
-
     // Variables
     private Model.Position position;
     private Model.Velocity velocity;

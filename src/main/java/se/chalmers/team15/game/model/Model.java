@@ -1,15 +1,15 @@
 package se.chalmers.team15.game.model;
 
-import se.chalmers.team15.game.model.Model.Velocity;
+import se.chalmers.team15.game.model.Model.Direction;
 
 public class Model {
   /** In pixels, measured from the top-left corner of the window. */
   public record Position(float x, float y) {
-    public Position moveBy(Velocity velocity, float dt) {
-      return new Position(x + velocity.x() * dt, y + velocity.y() * dt);
+    public Position moveBy(Direction direction, float dt) {
+      return new Position(x + direction.x() * dt, y + direction.y() * dt);
     }
   }
-  
+
   /** In pixels per second. */
   public record Direction(float x, float y) {
   }
@@ -52,23 +52,23 @@ public class Model {
   }
 
   private Position position;
-  private Velocity velocity;
-  private Velocity speed = new Velocity(0, 0);
+  private Direction direction;
+  private Direction speed = new Direction(0, 0);
   private final Size size;
 
   public Model() {
-    this(new Position(1350, 450), new Velocity(0, 0), new Size(80, 80));
+    this(new Position(1350, 450), new Direction(0, 0), new Size(80, 80));
   }
 
-  public Model(Position position, Velocity velocity, Size size) {
+  public Model(Position position, Direction velocity, Size size) {
     this.position = position;
-    this.velocity = velocity;
+    this.direction = velocity;
     this.size = size;
   }
 
   /** Advances the simulation by {@code dt} seconds. */
   public void update(float dt) {
-    speed = new Velocity(speed.x() * 0.99f + velocity.x(), speed.y() * 0.99f + velocity.y());
+    speed = new Direction(speed.x() * 0.99f + direction.x(), speed.y() * 0.99f + direction.y());
     position = position.moveBy(speed, dt);
 
     if (position.y() < 100 || position.y() > 1000) {
@@ -76,20 +76,20 @@ public class Model {
     }
 
     if (position.x() == 100 || position.x() == 2000) {
-      this.velocity = new Model.Velocity(this.velocity.x() * -1, this.velocity.y());
+      this.direction = new Model.Direction(this.direction.x() * -1, this.direction.y());
     }
   }
 
-  public void setDirection(Velocity velocity) {
-    this.velocity = velocity;
+  public void setDirection(Direction direction) {
+    this.direction = direction;
   }
 
   public Position getPosition() {
     return position;
   }
 
-  public Velocity getVelocity() {
-    return velocity;
+  public Direction getDirection() {
+    return direction;
   }
 
   public Size getSize() {

@@ -4,14 +4,14 @@ package se.chalmers.team15.game.model;
 public class Puck {
     // Variables
     private Model.Position position;
-    private Model.Direction velocity;
+    private Model.Direction direction;
 
     private static final float RADIUS = 50;
 
     // Making the puck
     public Puck(float xPos, float yPos) {
         this.position = new Model.Position(xPos, yPos);
-        this.velocity = new Model.Velocity(0, 0);
+        this.direction = new Model.Direction(0, 0);
     }
 
     // Getters
@@ -19,8 +19,8 @@ public class Puck {
         return position;
     }
 
-    public Model.Velocity getVelocity() {
-        return velocity;
+    public Model.Direction getDirection() {
+        return direction;
     }
 
     public float getRadius() {

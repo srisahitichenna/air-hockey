@@ -23,13 +23,14 @@ public class Model {
   }
 
   /** In pixels per second. */
-  public record Velocity(float x, float y) {}
-  
+  public record Velocity(float x, float y) {
+  }
+
   private final Score score = new Score();
 
   public Score getScore() {
     return score;
-  
+  }
 
   public void goalRight() {
     score.addPlayer1();
@@ -46,11 +47,9 @@ public class Model {
     // reset strikers
   }
 
-  /** In pixels per second. */
-  public record Velocity(float x, float y) {}
-
   /** In pixels. */
-  public record Size(int width, int height) {}
+  public record Size(int width, int height) {
+  }
 
   private Position position;
   private Velocity velocity;
@@ -58,7 +57,7 @@ public class Model {
   private final Size size;
 
   public Model() {
-    this(new Position(100, 100), new Velocity(0, 0), new Size(80, 80));
+    this(new Position(1350, 450), new Velocity(0, 0), new Size(80, 80));
   }
 
   public Model(Position position, Velocity velocity, Size size) {

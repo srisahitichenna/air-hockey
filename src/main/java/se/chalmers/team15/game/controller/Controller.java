@@ -3,7 +3,7 @@ package se.chalmers.team15.game.controller;
 import static com.raylib.Raylib.*;
 
 import se.chalmers.team15.game.model.Model;
-import se.chalmers.team15.game.model.Model.Direction;;
+import se.chalmers.team15.game.model.Model.Direction;
 
 public class Controller {
   /** Speed while an arrow key is held, in pixels per second. */

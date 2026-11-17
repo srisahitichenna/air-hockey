@@ -3,8 +3,6 @@ package se.chalmers.team15.game.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import se.chalmers.team15.game.model.Model.Position;
-import se.chalmers.team15.game.model.Model.Size;
 import se.chalmers.team15.game.model.Model.Direction;;
 
 class ModelTest {
@@ -12,22 +10,26 @@ class ModelTest {
 
   @Test
   void positionMovesWithVelocityAfterUpdate() {
-    Model model = new Model(new Position(100f, 200f), new Direction(10f, -20f), new Size(50, 50));
+    Model model = new Model(new Direction(10f, -20f));
 
+    model.update(1000);
     model.update(0.5f);
 
-    assertEquals(105f, model.getPosition().x(), TOLERANCE);
-    assertEquals(190f, model.getPosition().y(), TOLERANCE);
+    assertEquals(905f, model.getPuck().getPosition().x(), TOLERANCE);
+    assertEquals(440f, model.getPuck().getPosition().y(), TOLERANCE);
   }
 
   @Test
-  void positionStaysWhenVelocityIsZero() {
-    Model model = new Model(new Position(100f, 200f), new Direction(10f, -20f), new Size(50, 50));
+  void puckPositionStaysWhenVelocityIsZero() {
+    Model model = new Model(new Direction(10f, -20f));
 
-    model.setDirection(new Direction(0f, 0f));
+    model.update(1000f);
+    model.getPuck().setDirection(new Direction(0f, 0f));
+    model.getPuck().setSpeed(0);
     model.update(0.5f);
 
-    assertEquals(100f, model.getPosition().x(), TOLERANCE);
-    assertEquals(200f, model.getPosition().y(), TOLERANCE);
+    assertEquals(900f, model.getPuck().getPosition().x(), TOLERANCE);
+    assertEquals(450f, model.getPuck().getPosition().y(), TOLERANCE);
   }
+
 }

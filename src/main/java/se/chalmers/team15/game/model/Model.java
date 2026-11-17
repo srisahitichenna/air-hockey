@@ -3,13 +3,34 @@ package se.chalmers.team15.game.model;
 public class Model {
   /** In pixels, measured from the top-left corner of the window. */
   public record Position(float x, float y) {
-    public Position moveBy(Direction direction, float dt) {
-      return new Position(x + direction.x() * dt, y + direction.y() * dt);
+    public Position moveBy(Direction velocity, float dt) {
+      return new Position(this.x + velocity.x() * dt, this.y + velocity.y() * dt);
     }
   }
 
   /** In pixels per second. */
-  public record Direction(float x, float y) {
+  public static class Direction {
+    private float x;
+    private float y;
+
+    public Direction(float x, float y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    public float getMagnitudeAndNormalize() {
+      if(this.x == 0 && this.y == 0){
+        return 0;
+      }
+      float magnitude = (float) Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+      this.x = x / magnitude;
+      this.y = y / magnitude;
+      return magnitude;
+    }
+
+    public float x(){return this.x;}
+
+    public float y(){return this.y;}
   }
 
   private final Rink rink = new Rink(1600, 800, 80);
@@ -56,18 +77,20 @@ public class Model {
   }
 
   /** Advances the simulation by {@code dt} seconds. */
-  public void update(float dt) {
-    puck.setPosition(puck.getPosition().moveBy(puck.getDirection(), puck.getSpeed()));
-    puck.setSpeed();
-    puck.setDirection();
-    //speed = new Direction(speed.x() * 0.99f + direction.x(), speed.y() * 0.99f + direction.y());
+  public void update(float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan bestämmas för nästa frame och visas
+    puck.setPosition(puck.getPosition().moveBy(new Direction(puck.getDirection().x() * puck.getSpeed(), puck.getDirection().y() * puck.getSpeed()), dt));
+    
+    Direction velocity = new Direction(puck.getDirection().x() * puck.getSpeed() * 0.99f + direction.x(), puck.getDirection().y() * puck.getSpeed() * 0.99f + direction.y());
+    puck.setSpeed(velocity.getMagnitudeAndNormalize());
+    puck.setDirection(velocity);
+    
 
-    if (puck.getPosition().y() < 100 || puck.getPosition().y() > 1000) {
-      puck.setDirection(puck.getDirection().x(), puck.getDirection().y() * -1);
+    if (puck.getPosition().y() <= 100 || puck.getPosition().y() >= 800) {
+      puck.setDirection(new Direction(puck.getDirection().x(), puck.getDirection().y() * -1));
     }
 
-    if (puck.getPosition().x() == 100 || puck.getPosition().x() == 2000) {
-      puck.setDirection(puck.getDirection().x() * -1, puck.getDirection().y());
+    if (puck.getPosition().x() <= 150 || puck.getPosition().x() >= 1650) {
+      puck.setDirection(new Direction(puck.getDirection().x() * -1, puck.getDirection().y()));
     }
   }
 

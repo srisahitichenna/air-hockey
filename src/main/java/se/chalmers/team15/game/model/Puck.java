@@ -35,4 +35,13 @@ public class Puck {
     public float getRadius() {
         return RADIUS;
     }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float newSpeed) {
+        speed = newSpeed;
+    }
+
 }

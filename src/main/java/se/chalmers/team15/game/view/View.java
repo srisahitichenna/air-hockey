@@ -68,5 +68,6 @@ public class View {
   }
 
   public void drawScore() {
+    scoreView.drawScore(model);;
   }
 }

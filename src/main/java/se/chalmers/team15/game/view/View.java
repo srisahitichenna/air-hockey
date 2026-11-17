@@ -6,6 +6,7 @@ import static com.raylib.Raylib.*;
 import se.chalmers.team15.game.model.Model;
 import se.chalmers.team15.game.model.Model.Position;
 import se.chalmers.team15.game.model.Model.Size;
+import se.chalmers.team15.game.model.Puck;
 
 public class View {
   private final Model model;
@@ -14,12 +15,18 @@ public class View {
   private final RinkView rinkView = new RinkView();
 
   public View(Model model, Model model2) {
+  private final ScoreView scoreView = new ScoreView(rinkView);
+
+  public View(Model model) {
     this.model = model;
     this.model2 = model2;
   }
 
   public void update() {
+    BeginDrawing();
     drawMap();
+    drawPuck();
+    EndDrawing();
   }
 
   public void drawPlayers() {
@@ -31,7 +38,10 @@ public class View {
      *
      * This is a bad code, we need to implement this better
      * i just tried to experiment - Charlie
+     *
+     *
      */
+
   }
 
   public void drawMap() {
@@ -43,21 +53,32 @@ public class View {
     Size size2 = model2.getSize();
     DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);
     DrawRectangle((int) position2.x(), (int) position2.y(), size2.width(), size2.height(), BLUE);
+  private void drawMap() {
+    ClearBackground(BLACK);
+    rinkView.drawRink(model.getRink());
+    Position p = model.getPosition();
+    DrawCircle((int) p.x(), (int) p.y(), 50, MAROON);
+    DrawCircle((int) p.x(), (int) p.y(), 20, RED);
+    System.out.println(p.x() + ", " + p.y());
   }
 
   public void drawPuck() {
-    BeginDrawing();
-    /*
-     * Not done
-     */
-    EndDrawing();
+    Puck puck = model.getPuck();
+    Position position = puck.getPosition();
+    float radius = puck.getRadius();
+
+    DrawCircle(
+        (int) position.x(),
+        (int) position.y(),
+        (int) radius,
+        BLACK);
+    DrawCircle(
+        (int) position.x(),
+        (int) position.y(),
+        (int) 40,
+        DARKGRAY);
   }
 
   public void drawScore() {
-    BeginDrawing();
-    /*
-     * Not done
-     */
-    EndDrawing();
   }
 }

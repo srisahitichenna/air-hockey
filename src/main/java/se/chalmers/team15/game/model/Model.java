@@ -17,20 +17,47 @@ public class Model {
     return rink;
   }
 
+  private final Puck puck = new Puck(900, 450);
+
+  public Puck getPuck() {
+    return puck;
+  }
+
   /** In pixels per second. */
   public record Velocity(float x, float y) {}
+
+  private final Score score = new Score();
+
+  public Score getScore() {
+    return score;
+  }
+
+  public void goalRight() {
+    score.addPlayer1();
+    ;
+  }
+
+  public void goalLeft() {
+    score.addPlayer2();
+  }
+
+  public void restartGame() {
+    score.resetScore();
+    // reset puck
+    // reset strikers
+  }
 
   /** In pixels. */
   public record Size(int width, int height) {}
 
   private Position position;
   private Velocity velocity;
-  private Integer score;
   private Velocity speed = new Velocity(0, 0);
   private final Size size;
 
   public Model() {
     this(new Position(200, 415), new Velocity(0, 0), new Size(80, 80));
+    this(new Position(1350, 450), new Velocity(0, 0), new Size(80, 80));
   }
 
   public Model(Position position, Velocity velocity, Size size) {
@@ -55,10 +82,6 @@ public class Model {
 
   public Velocity getVelocity() {
     return velocity;
-  }
-
-  public Integer getScore() {
-    return score;
   }
 
   public Size getSize() {

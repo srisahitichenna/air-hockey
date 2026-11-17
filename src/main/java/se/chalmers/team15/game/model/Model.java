@@ -84,14 +84,15 @@ public class Model {
     puck.setSpeed(velocity.getMagnitudeAndNormalize());
     puck.setDirection(velocity);
     
+    if (puck.getPosition().y() <= 100)
+      puck.setDirection(new Direction(puck.getDirection().x(), Math.abs(puck.getDirection().y())));
+    else if (puck.getPosition().y() >= 800)
+      puck.setDirection(new Direction(puck.getDirection().x(), Math.abs(puck.getDirection().y()) * -1));
 
-    if (puck.getPosition().y() <= 100 || puck.getPosition().y() >= 800) {
-      puck.setDirection(new Direction(puck.getDirection().x(), puck.getDirection().y() * -1));
-    }
-
-    if (puck.getPosition().x() <= 150 || puck.getPosition().x() >= 1650) {
-      puck.setDirection(new Direction(puck.getDirection().x() * -1, puck.getDirection().y()));
-    }
+    if (puck.getPosition().x() <= 150)
+      puck.setDirection(new Direction(Math.abs(puck.getDirection().x()), puck.getDirection().y()));
+    else if (puck.getPosition().x() >= 1650)
+      puck.setDirection(new Direction(Math.abs(puck.getDirection().x()) * -1, puck.getDirection().y()));
   }
 
   public void setDirection(Direction direction) {

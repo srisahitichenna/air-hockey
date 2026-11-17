@@ -70,9 +70,17 @@ public class Model {
   public void update(float dt) {
     speed = new Velocity(speed.x() * 0.99f + velocity.x(), speed.y() * 0.99f + velocity.y());
     position = position.moveBy(speed, dt);
+
+    if (position.y() < 100 || position.y() > 1000) {
+
+    }
+
+    if (position.x() == 100 || position.x() == 2000) {
+      this.velocity = new Model.Velocity(this.velocity.x() * -1, this.velocity.y());
+    }
   }
 
-  public void setVelocity(Velocity velocity) {
+  public void setDirection(Velocity velocity) {
     this.velocity = velocity;
   }
 

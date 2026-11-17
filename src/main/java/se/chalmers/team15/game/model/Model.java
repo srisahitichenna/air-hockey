@@ -1,6 +1,7 @@
 package se.chalmers.team15.game.model;
 
 import se.chalmers.team15.game.model.Model.Direction;
+import se.chalmers.team15.game.model.Puck;
 
 public class Model {
   /** In pixels, measured from the top-left corner of the window. */
@@ -71,12 +72,12 @@ public class Model {
     speed = new Direction(speed.x() * 0.99f + direction.x(), speed.y() * 0.99f + direction.y());
     position = position.moveBy(speed, dt);
 
-    if (position.y() < 100 || position.y() > 1000) {
-
+    if (puck.getPosition().y() < 100 || puck.getPosition().y() > 1000) {
+      puck.setDirection(puck.getDirection().x(), puck.getDirection().y() * -1);
     }
 
-    if (position.x() == 100 || position.x() == 2000) {
-      this.direction = new Model.Direction(this.direction.x() * -1, this.direction.y());
+    if (puck.getPosition().x() == 100 || puck.getPosition().x() == 2000) {
+      puck.setDirection(puck.getDirection().x() * -1, puck.getDirection().y());
     }
   }
 

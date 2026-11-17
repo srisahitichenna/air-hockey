@@ -5,6 +5,7 @@ public class Puck {
     // Variables
     private Model.Position position;
     private Model.Direction direction;
+    private float speed = 0;
 
     private static final float RADIUS = 50;
 
@@ -21,6 +22,10 @@ public class Puck {
 
     public Model.Direction getDirection() {
         return direction;
+    }
+
+    public void setDirection(float x, float y) {
+        this.direction = new Model.Direction(x, y);
     }
 
     public float getRadius() {

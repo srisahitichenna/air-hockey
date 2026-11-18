@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="se.chalmers.team15.game.model.ModelTest" time="0.022" tests="2" errors="0" skipped="0" failures="0" flakes="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="se.chalmers.team15.game.model.ModelTest" time="0.02" tests="2" errors="0" skipped="0" failures="0" flakes="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.class.path" value="/Users/mollywik/Desktop/it/2.2/maven-template/Game/target/test-classes:/Users/mollywik/Desktop/it/2.2/maven-template/Game/target/classes:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter/6.1.3/junit-jupiter-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.1.3/junit-jupiter-api-6.1.3.jar:/Users/mollywik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-commons/6.1.3/junit-platform-commons-6.1.3.jar:/Users/mollywik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mollywik/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.1.3/junit-jupiter-params-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.1.3/junit-jupiter-engine-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-engine/6.1.3/junit-platform-engine-6.1.3.jar:/Users/mollywik/.m2/repository/uk/co/electronstudio/jaylib/jaylib/6.0.1-0/jaylib-6.0.1-0.jar:"/>
+    <property name="java.class.path" value="/Users/mollywik/prog/air-hockey/target/test-classes:/Users/mollywik/prog/air-hockey/target/classes:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter/6.1.3/junit-jupiter-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.1.3/junit-jupiter-api-6.1.3.jar:/Users/mollywik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-commons/6.1.3/junit-platform-commons-6.1.3.jar:/Users/mollywik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mollywik/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.1.3/junit-jupiter-params-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.1.3/junit-jupiter-engine-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-engine/6.1.3/junit-platform-engine-6.1.3.jar:/Users/mollywik/.m2/repository/uk/co/electronstudio/jaylib/jaylib/6.0.1-0/jaylib-6.0.1-0.jar:"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
@@ -12,10 +12,10 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="SE"/>
     <property name="sun.boot.library.path" value="/Users/mollywik/Library/Java/JavaVirtualMachines/openjdk-25.0.2/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/mollywik/Desktop/it/2.2/maven-template/Game/target/surefire/surefirebooter-20261111154310091_3.jar /Users/mollywik/Desktop/it/2.2/maven-template/Game/target/surefire 2026-11-11T15-43-10_054-jvmRun1 surefire-20261111154310091_1tmp surefire_0-20261111154310091_2tmp"/>
+    <property name="sun.java.command" value="/Users/mollywik/prog/air-hockey/target/surefire/surefirebooter-20261117163242344_3.jar /Users/mollywik/prog/air-hockey/target/surefire 2026-11-17T16-32-42_310-jvmRun1 surefire-20261117163242344_1tmp surefire_0-20261117163242344_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="/Users/mollywik/Desktop/it/2.2/maven-template/Game/target/test-classes:/Users/mollywik/Desktop/it/2.2/maven-template/Game/target/classes:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter/6.1.3/junit-jupiter-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.1.3/junit-jupiter-api-6.1.3.jar:/Users/mollywik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-commons/6.1.3/junit-platform-commons-6.1.3.jar:/Users/mollywik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mollywik/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.1.3/junit-jupiter-params-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.1.3/junit-jupiter-engine-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-engine/6.1.3/junit-platform-engine-6.1.3.jar:/Users/mollywik/.m2/repository/uk/co/electronstudio/jaylib/jaylib/6.0.1-0/jaylib-6.0.1-0.jar:"/>
+    <property name="surefire.test.class.path" value="/Users/mollywik/prog/air-hockey/target/test-classes:/Users/mollywik/prog/air-hockey/target/classes:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter/6.1.3/junit-jupiter-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.1.3/junit-jupiter-api-6.1.3.jar:/Users/mollywik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-commons/6.1.3/junit-platform-commons-6.1.3.jar:/Users/mollywik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mollywik/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.1.3/junit-jupiter-params-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.1.3/junit-jupiter-engine-6.1.3.jar:/Users/mollywik/.m2/repository/org/junit/platform/junit-platform-engine/6.1.3/junit-platform-engine-6.1.3.jar:/Users/mollywik/.m2/repository/uk/co/electronstudio/jaylib/jaylib/6.0.1-0/jaylib-6.0.1-0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/Users/mollywik"/>
     <property name="user.language" value="sv"/>
@@ -23,13 +23,13 @@
     <property name="java.version.date" value="2026-01-20"/>
     <property name="java.home" value="/Users/mollywik/Library/Java/JavaVirtualMachines/openjdk-25.0.2/Contents/Home"/>
     <property name="file.separator" value="/"/>
-    <property name="basedir" value="/Users/mollywik/Desktop/it/2.2/maven-template/Game"/>
+    <property name="basedir" value="/Users/mollywik/prog/air-hockey"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/mollywik/Desktop/it/2.2/maven-template/Game/target/surefire/surefirebooter-20261111154310091_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/mollywik/prog/air-hockey/target/surefire/surefirebooter-20261117163242344_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="25.0.2+10-69"/>
@@ -44,7 +44,7 @@
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="java.io.tmpdir" value="/var/folders/vp/0ltwj6pd6flb8m1yn_fppx8m0000gn/T/"/>
     <property name="java.version" value="25.0.2"/>
-    <property name="user.dir" value="/Users/mollywik/Desktop/it/2.2/maven-template/Game"/>
+    <property name="user.dir" value="/Users/mollywik/prog/air-hockey"/>
     <property name="os.arch" value="aarch64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="native.encoding" value="UTF-8"/>
@@ -58,6 +58,6 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="positionStaysWhenVelocityIsZero" classname="se.chalmers.team15.game.model.ModelTest" time="0.012"/>
-  <testcase name="positionMovesWithVelocityAfterUpdate" classname="se.chalmers.team15.game.model.ModelTest" time="0.003"/>
+  <testcase name="positionStaysWhenVelocityIsZero" classname="se.chalmers.team15.game.model.ModelTest" time="0.011"/>
+  <testcase name="positionMovesWithVelocityAfterUpdate" classname="se.chalmers.team15.game.model.ModelTest" time="0.002"/>
 </testsuite>

@@ -25,6 +25,8 @@ public class Main {
     Controller controller = new Controller(model, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
     Controller controller2 = new Controller(model2, KEY_A, KEY_D, KEY_W, KEY_S);
 
+    model.startMatch();
+
     while (!WindowShouldClose()) {
       float dt = GetFrameTime();
       controller.update();

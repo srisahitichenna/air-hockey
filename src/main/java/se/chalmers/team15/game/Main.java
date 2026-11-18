@@ -18,12 +18,11 @@ public class Main {
     SetTargetFPS(FRAMES_PER_SECOND);
 
     Model model = new Model();
-    Model model2 =
-        new Model(new Model.Position(1400, 415), new Model.Velocity(0, 0), new Model.Size(80, 80));
-    View view = new View(model, model2);
+    View view = new View(model);
 
-    Controller controller = new Controller(model, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
-    Controller controller2 = new Controller(model2, KEY_A, KEY_D, KEY_W, KEY_S);
+    Controller controller =
+        new Controller(model.getPlayer1(), KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
+    Controller controller2 = new Controller(model.getPlayer2(), KEY_A, KEY_D, KEY_W, KEY_S);
 
     model.startMatch();
 
@@ -31,13 +30,10 @@ public class Main {
       float dt = GetFrameTime();
       controller.update();
       controller2.update();
-      BeginDrawing();
       ClearBackground(BLACK);
 
       model.update(dt);
-      model2.update(dt);
       view.update();
-      EndDrawing();
     }
 
     CloseWindow();

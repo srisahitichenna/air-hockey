@@ -10,13 +10,16 @@ import se.chalmers.team15.game.model.Puck;
 
 public class View {
   private final Model model;
+  private final Model model2;
 
   private final RinkView rinkView = new RinkView();
 
+  public View(Model model, Model model2) {
   private final ScoreView scoreView = new ScoreView(rinkView);
 
   public View(Model model) {
     this.model = model;
+    this.model2 = model2;
   }
 
   public void update() {
@@ -41,6 +44,15 @@ public class View {
 
   }
 
+  public void drawMap() {
+
+    rinkView.drawRink(model.getRink());
+    Position position = model.getPosition();
+    Position position2 = model2.getPosition();
+    Size size = model.getSize();
+    Size size2 = model2.getSize();
+    DrawRectangle((int) position.x(), (int) position.y(), size.width(), size.height(), MAROON);
+    DrawRectangle((int) position2.x(), (int) position2.y(), size2.width(), size2.height(), BLUE);
   private void drawMap() {
     ClearBackground(BLACK);
     rinkView.drawRink(model.getRink());

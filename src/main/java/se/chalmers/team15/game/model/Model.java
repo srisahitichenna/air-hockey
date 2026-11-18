@@ -1,5 +1,6 @@
 package se.chalmers.team15.game.model;
 
+
 import se.chalmers.team15.game.model.Model.Velocity;
 
 public class Model {
@@ -23,8 +24,7 @@ public class Model {
   }
 
   /** In pixels per second. */
-  public record Velocity(float x, float y) {
-  }
+  public record Velocity(float x, float y) {}
 
   private final Score score = new Score();
 
@@ -48,8 +48,7 @@ public class Model {
   }
 
   /** In pixels. */
-  public record Size(int width, int height) {
-  }
+  public record Size(int width, int height) {}
 
   private Position position;
   private Velocity velocity;
@@ -57,6 +56,7 @@ public class Model {
   private final Size size;
 
   public Model() {
+    this(new Position(200, 415), new Velocity(0, 0), new Size(80, 80));
     this(new Position(1350, 450), new Velocity(0, 0), new Size(80, 80));
   }
 

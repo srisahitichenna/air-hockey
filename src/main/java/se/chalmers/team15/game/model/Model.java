@@ -19,7 +19,7 @@ public class Model {
     }
 
     public float getMagnitudeAndNormalize() {
-      if(this.x == 0 && this.y == 0){
+      if (this.x == 0 && this.y == 0) {
         return 0;
       }
       float magnitude = (float) Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
@@ -28,9 +28,13 @@ public class Model {
       return magnitude;
     }
 
-    public float x(){return this.x;}
+    public float x() {
+      return this.x;
+    }
 
-    public float y(){return this.y;}
+    public float y() {
+      return this.y;
+    }
   }
 
   private final Rink rink = new Rink(1600, 800, 80);
@@ -77,13 +81,17 @@ public class Model {
   }
 
   /** Advances the simulation by {@code dt} seconds. */
-  public void update(float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan bestämmas för nästa frame och visas
-    puck.setPosition(puck.getPosition().moveBy(new Direction(puck.getDirection().x() * puck.getSpeed(), puck.getDirection().y() * puck.getSpeed()), dt));
-    
-    Direction velocity = new Direction(puck.getDirection().x() * puck.getSpeed() * 0.99f + direction.x(), puck.getDirection().y() * puck.getSpeed() * 0.99f + direction.y());
+  public void update(float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan
+                                 // bestämmas för nästa frame och visas
+    puck.setPosition(puck.getPosition().moveBy(
+        new Direction(puck.getDirection().x() * puck.getSpeed(), puck.getDirection().y() * puck.getSpeed()), dt));
+
+    /* Puck-Wall collision */
+    Direction velocity = new Direction(puck.getDirection().x() * puck.getSpeed() * 0.99f + direction.x(),
+        puck.getDirection().y() * puck.getSpeed() * 0.99f + direction.y());
     puck.setSpeed(velocity.getMagnitudeAndNormalize());
     puck.setDirection(velocity);
-    
+
     if (puck.getPosition().y() <= 100)
       puck.setDirection(new Direction(puck.getDirection().x(), Math.abs(puck.getDirection().y())));
     else if (puck.getPosition().y() >= 800)
@@ -93,6 +101,10 @@ public class Model {
       puck.setDirection(new Direction(Math.abs(puck.getDirection().x()), puck.getDirection().y()));
     else if (puck.getPosition().x() >= 1650)
       puck.setDirection(new Direction(Math.abs(puck.getDirection().x()) * -1, puck.getDirection().y()));
+
+    /* Striker-Wall collision */
+
+    /* Striker-Puck collision */
   }
 
   public void setDirection(Direction direction) {

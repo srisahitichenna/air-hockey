@@ -12,7 +12,7 @@ public class View {
 
   private final RinkView rinkView = new RinkView();
   private final ScoreView scoreView = new ScoreView(rinkView);
-  private final TimerView timerView = new TimerView();
+  private final TimerView timerView = new TimerView(rinkView);
 
   public View(Model model) {
     this.model = model;
@@ -23,6 +23,7 @@ public class View {
     drawMap();
     drawPuck();
     drawScore();
+    drawTimer();
     EndDrawing();
   }
 
@@ -64,6 +65,6 @@ public class View {
   }
 
   public void drawTimer() {
-    timerView.drawTimer();
+    timerView.drawTimer(model);
   }
 }

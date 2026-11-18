@@ -3,7 +3,7 @@ package se.chalmers.team15.game.model;
 import se.chalmers.team15.game.model.Model.Velocity;
 
 public class Model {
-  
+
   /** In pixels, measured from the top-left corner of the window. */
   public record Position(float x, float y) {
     public Position moveBy(Velocity velocity, float dt) {
@@ -40,21 +40,19 @@ public class Model {
     score.addPlayer2();
   }
 
-
   private int MATCH_LENGTH = 300; // 5 min match length
   private final Timer timer = new Timer(MATCH_LENGTH);
 
+  public Timer getTimer() {
+    return timer;
+  }
 
-  public void startGame() {
+  public void startMatch() {
     score.resetScore();
     // reset puck
     // reset strikers
     timer.resetTimer();
     timer.startTimer();
-  }
-
-  public Timer getTimer() {
-    return timer;
   }
 
   /** In pixels. */
@@ -79,6 +77,12 @@ public class Model {
   public void update(float dt) {
     speed = new Velocity(speed.x() * 0.99f + velocity.x(), speed.y() * 0.99f + velocity.y());
     position = position.moveBy(speed, dt);
+    timer.update(dt);
+    if (timer.isFinished()) {
+      // stop puck and players
+      // announce winner
+      return;
+    }
   }
 
   public void setVelocity(Velocity velocity) {

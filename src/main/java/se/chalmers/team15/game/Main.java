@@ -20,6 +20,8 @@ public class Main {
     View view = new View(model);
     Controller controller = new Controller(model);
 
+    model.startMatch();
+
     while (!WindowShouldClose()) {
       model.update(GetFrameTime());
       view.update();

@@ -4,7 +4,7 @@ import se.chalmers.team15.game.model.Model.Direction;
 import se.chalmers.team15.game.model.Model.Position;
 
 /*hi  */
-public class Puck {
+public class Puck implements movable {
     // Variables
     private Model.Position position;
     private Model.Direction direction;

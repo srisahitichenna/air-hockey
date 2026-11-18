@@ -86,25 +86,34 @@ public class Model {
     puck.setPosition(puck.getPosition().moveBy(
         new Direction(puck.getDirection().x() * puck.getSpeed(), puck.getDirection().y() * puck.getSpeed()), dt));
 
-    /* Puck-Wall collision */
     Direction velocity = new Direction(puck.getDirection().x() * puck.getSpeed() * 0.99f + direction.x(),
         puck.getDirection().y() * puck.getSpeed() * 0.99f + direction.y());
     puck.setSpeed(velocity.getMagnitudeAndNormalize());
     puck.setDirection(velocity);
 
-    if (puck.getPosition().y() <= 100)
-      puck.setDirection(new Direction(puck.getDirection().x(), Math.abs(puck.getDirection().y())));
-    else if (puck.getPosition().y() >= 800)
-      puck.setDirection(new Direction(puck.getDirection().x(), Math.abs(puck.getDirection().y()) * -1));
+    /* Puck-Wall collision */
+    wallcollision(puck);
 
-    if (puck.getPosition().x() <= 150)
-      puck.setDirection(new Direction(Math.abs(puck.getDirection().x()), puck.getDirection().y()));
-    else if (puck.getPosition().x() >= 1650)
-      puck.setDirection(new Direction(Math.abs(puck.getDirection().x()) * -1, puck.getDirection().y()));
-
-    /* Striker-Wall collision */
-
+    /*
+     * To Be Implemented when Striker class appears
+     * Striker-Wall collision
+     * for each Striker {
+     * wallcollision(Striker);
+     * }
+     */
     /* Striker-Puck collision */
+  }
+
+  public <T extends movable> void wallcollision(T object) {
+    if (object.getPosition().y() <= 50 + object.getRadius())
+      object.setDirection(new Direction(object.getDirection().x(), Math.abs(object.getDirection().y())));
+    else if (object.getPosition().y() >= 850 - object.getRadius())
+      object.setDirection(new Direction(object.getDirection().x(), Math.abs(object.getDirection().y()) * -1));
+
+    if (object.getPosition().x() <= 100 + object.getRadius())
+      object.setDirection(new Direction(Math.abs(object.getDirection().x()), object.getDirection().y()));
+    else if (object.getPosition().x() >= 1700 - object.getRadius())
+      object.setDirection(new Direction(Math.abs(object.getDirection().x()) * -1, object.getDirection().y()));
   }
 
   public void setDirection(Direction direction) {

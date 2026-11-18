@@ -44,11 +44,11 @@ public class View {
     ClearBackground(BLACK);
     rinkView.drawRink(model.getRink());
     /*
-    Position p = new Position(900, 450);
-    DrawCircle((int) p.x(), (int) p.y(), 50, MAROON);
-    DrawCircle((int) p.x(), (int) p.y(), 20, RED);
-    System.out.println(p.x() + ", " + p.y());
-    */
+     * Position p = new Position(900, 450);
+     * DrawCircle((int) p.x(), (int) p.y(), 50, MAROON);
+     * DrawCircle((int) p.x(), (int) p.y(), 20, RED);
+     * System.out.println(p.x() + ", " + p.y());
+     */
   }
 
   public void drawPuck() {
@@ -60,12 +60,12 @@ public class View {
         Math.round(position.x()),
         Math.round(position.y()),
         Math.round(radius),
-        BLACK);
+        LIME);
     DrawCircle(
         Math.round(position.x()),
         Math.round(position.y()),
-        Math.round(40),
-        DARKGRAY);
+        Math.round(radius - 10),
+        GREEN);
   }
 
   public void drawScore() {

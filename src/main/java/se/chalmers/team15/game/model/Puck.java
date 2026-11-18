@@ -1,4 +1,5 @@
 package se.chalmers.team15.game.model;
+
 import se.chalmers.team15.game.model.Model.Direction;
 import se.chalmers.team15.game.model.Model.Position;
 
@@ -9,7 +10,7 @@ public class Puck {
     private Model.Direction direction;
     private float speed = 0;
 
-    private static final float RADIUS = 50;
+    private static final float RADIUS = 30;
 
     // Making the puck
     public Puck(float xPos, float yPos) {
@@ -21,7 +22,7 @@ public class Puck {
     public Model.Position getPosition() {
         return position;
     }
-    
+
     public void setPosition(Model.Position position) {
         this.position = position;
     }

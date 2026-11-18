@@ -1,5 +1,6 @@
 package se.chalmers.team15.game.model;
 
+
 import se.chalmers.team15.game.model.Model.Velocity;
 
 public class Model {
@@ -64,6 +65,7 @@ public class Model {
   private final Size size;
 
   public Model() {
+    this(new Position(200, 415), new Velocity(0, 0), new Size(80, 80));
     this(new Position(1350, 450), new Velocity(0, 0), new Size(80, 80));
   }
 

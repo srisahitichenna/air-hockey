@@ -9,7 +9,12 @@ public class Controller {
   /** Speed while an arrow key is held, in pixels per second. */
   private static final float SPEED = 60f;
 
-  private enum Key {
+  private final int KEY_LEFT;
+  private final int KEY_RIGHT;
+  private final int KEY_UP;
+  private final int KEY_DOWN;
+
+  /*private enum Key {
     LEFT(KEY_LEFT, -1, 0),
     RIGHT(KEY_RIGHT, 1, 0),
     UP(KEY_UP, 0, -1),
@@ -24,12 +29,16 @@ public class Controller {
       this.xVel = xVel * SPEED;
       this.yVel = yVel * SPEED;
     }
-  }
+  }*/
 
   private final Model model;
 
-  public Controller(Model model) {
+  public Controller(Model model, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
     this.model = model;
+    this.KEY_LEFT = KEY_LEFT;
+    this.KEY_RIGHT = KEY_RIGHT;
+    this.KEY_UP = KEY_UP;
+    this.KEY_DOWN = KEY_DOWN;
   }
 
   public void update() {
@@ -39,12 +48,20 @@ public class Controller {
   private void processInput() {
     float xVelocity = 0;
     float yVelocity = 0;
-    for (Key key : Key.values()) {
-      if (IsKeyDown(key.raylibCode)) {
-        xVelocity += key.xVel;
-        yVelocity += key.yVel;
-      }
+
+    if (IsKeyDown(KEY_LEFT)) {
+      xVelocity -= SPEED;
     }
+    if (IsKeyDown(KEY_RIGHT)) {
+      xVelocity += SPEED;
+    }
+    if (IsKeyDown(KEY_UP)) {
+      yVelocity -= SPEED;
+    }
+    if (IsKeyDown(KEY_DOWN)) {
+      yVelocity += SPEED;
+    }
+
     model.setVelocity(new Velocity(xVelocity, yVelocity));
   }
 }

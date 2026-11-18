@@ -111,9 +111,10 @@ public class Model {
       object.setDirection(new Direction(object.getDirection().x(), Math.abs(object.getDirection().y()) * -1));
 
     if (object.getPosition().x() <= 100 + object.getRadius()
-        & (object.getPosition().y() > 500 || object.getPosition().y() < 400) & !(object.getClass() == Puck.class))
+        & (object.getPosition().y() > 500 || object.getPosition().y() < 400))
       object.setDirection(new Direction(Math.abs(object.getDirection().x()), object.getDirection().y()));
-    else if (object.getPosition().x() >= 1700 - object.getRadius())
+    else if (object.getPosition().x() >= 1700 - object.getRadius()
+        & (object.getPosition().y() > 500 || object.getPosition().y() < 400))
       object.setDirection(new Direction(Math.abs(object.getDirection().x()) * -1, object.getDirection().y()));
   }
 

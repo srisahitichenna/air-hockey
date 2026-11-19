@@ -20,9 +20,8 @@ public class Main {
     Model model = new Model();
     View view = new View(model);
 
-    Controller controller =
-        new Controller(model.getPlayer1(), KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
-    Controller controller2 = new Controller(model.getPlayer2(), KEY_A, KEY_D, KEY_W, KEY_S);
+    Controller controller = new Controller(model, 0, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
+    Controller controller2 = new Controller(model, 1, KEY_A, KEY_D, KEY_W, KEY_S);
 
     model.startMatch();
 

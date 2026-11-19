@@ -35,10 +35,12 @@ public class View {
   private void drawStrikers() {
     Position position1 = model.getPlayer1().getPosition();
     Position position2 = model.getPlayer2().getPosition();
-    DrawCircle((int) position1.x(), (int) position1.y(), 50, MAROON);
-    DrawCircle((int) position1.x(), (int) position1.y(), 20, RED);
-    DrawCircle((int) position2.x(), (int) position2.y(), 50, DARKBLUE);
-    DrawCircle((int) position2.x(), (int) position2.y(), 20, BLUE);
+    float radius1 = model.getPlayer1().getRadius();
+    float radius2 = model.getPlayer2().getRadius();
+    DrawCircle(Math.round(position1.x()), Math.round(position1.y()), Math.round(radius1), MAROON);
+    DrawCircle(Math.round(position1.x()), Math.round(position1.y()), Math.round(radius1 * 0.4), RED);
+    DrawCircle(Math.round(position2.x()), Math.round(position2.y()), Math.round(radius2), DARKBLUE);
+    DrawCircle(Math.round(position2.x()), Math.round(position2.y()), Math.round(radius2 * 0.4), BLUE);
   }
 
   public void drawPuck() {
@@ -46,8 +48,16 @@ public class View {
     Position position = puck.getPosition();
     float radius = puck.getRadius();
 
-    DrawCircle((int) position.x(), (int) position.y(), (int) radius, BLACK);
-    DrawCircle((int) position.x(), (int) position.y(), (int) 40, DARKGRAY);
+    DrawCircle(
+        Math.round(position.x()),
+        Math.round(position.y()),
+        Math.round(radius),
+        LIME);
+    DrawCircle(
+        Math.round(position.x()),
+        Math.round(position.y()),
+        Math.round(radius * 0.8),
+        GREEN);
   }
 
   public void drawScore() {

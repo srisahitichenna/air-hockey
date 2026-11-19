@@ -1,41 +1,49 @@
 package se.chalmers.team15.game.model;
 
+import se.chalmers.team15.game.model.Model.Direction;
+import se.chalmers.team15.game.model.Model.Position;
+
 /*hi  */
-public class Puck {
-  // Variables
-  private Model.Position position;
-  private Model.Velocity velocity;
+public class Puck implements movable {
+    // Variables
+    private Model.Position position;
+    private Model.Direction direction = new Direction(0, 0);
+    private float speed = 0;
 
-  private static final float RADIUS = 50;
+    private static final float RADIUS = 30;
 
-  // Making the puck
-  public Puck(float xPos, float yPos) {
-    this.position = new Model.Position(xPos, yPos);
-    this.velocity = new Model.Velocity(0, 0);
+    // Making the puck
+    public Puck(float xPos, float yPos) {
+      this.position = new Position(xPos, yPos);
+    }
 
-    /*
-     * if (position.y() == 100 || position.y() == 1000) {
-     * this.velocity = new Model.Velocity(this.velocity.x(), this.velocity.y() *
-     * -1);
-     * }
-     *
-     * if (position.x() == 100 || position.x() == 2000) {
-     * this.velocity = new Model.Velocity(this.velocity.x() * -1,
-     * this.velocity.y());
-     * }
-     */
-  }
+    // Getters
+    public Model.Position getPosition() {
+      return position;
+    }
 
-  // Getters
-  public Model.Position getPosition() {
-    return position;
-  }
+    public void setPosition(Model.Position position) {
+      this.position = position;
+    }
 
-  public Model.Velocity getVelocity() {
-    return velocity;
-  }
+    public Model.Direction getDirection() {
+      return direction;
+    }
 
-  public float getRadius() {
-    return RADIUS;
-  }
+    public void setDirection(Direction direction) {
+      this.direction = direction;
+    }
+
+    public float getRadius() {
+      return RADIUS;
+    }
+
+    public float getSpeed() {
+      return speed;
+    }
+
+    public void setSpeed(float newSpeed) {
+      speed = newSpeed;
+    }
+
 }

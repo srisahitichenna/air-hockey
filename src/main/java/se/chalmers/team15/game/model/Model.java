@@ -4,8 +4,37 @@ public class Model {
 
   /** In pixels, measured from the top-left corner of the window. */
   public record Position(float x, float y) {
-    public Position moveBy(Velocity velocity, float dt) {
-      return new Position(x + velocity.x() * dt, y + velocity.y() * dt);
+    public Position moveBy(Direction velocity, float dt) {
+      return new Position(this.x + velocity.x() * dt, this.y + velocity.y() * dt);
+    }
+  }
+
+  /** In pixels per second. */
+  public static class Direction {
+    private float x;
+    private float y;
+
+    public Direction(float x, float y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    public float getMagnitudeAndNormalize() {
+      if (this.x == 0 && this.y == 0) {
+        return 0;
+      }
+      float magnitude = (float) Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+      this.x = x / magnitude;
+      this.y = y / magnitude;
+      return magnitude;
+    }
+
+    public float x() {
+      return this.x;
+    }
+
+    public float y() {
+      return this.y;
     }
   }
 
@@ -16,8 +45,16 @@ public class Model {
   private final Score score = new Score();
   private final Timer timer = new Timer(MATCH_LENGTH);
 
-  private final Striker player1 = new Striker(new Position(1400, 415), new Size(80, 80));
-  private final Striker player2 = new Striker(new Position(200, 415), new Size(80, 80));
+  private final Striker[] players = new Striker[2];
+  private final movable[] objs = new movable[players.length + 1]; //1 is number of pucks
+
+  public Model(){
+    players[0] = new Striker(new Position(1400, 415));
+    players[1] = new Striker(new Position(200, 415));
+    objs[0] = players[0];
+    objs[1] = players[1];
+    objs[2] = puck;
+  }
 
   public Rink getRink() {
     return rink;
@@ -27,19 +64,16 @@ public class Model {
     return puck;
   }
 
-  /** In pixels per second. */
-  public record Velocity(float x, float y) {}
-
   public Score getScore() {
     return score;
   }
 
   public Striker getPlayer1() {
-    return player1;
+    return players[0];
   }
 
   public Striker getPlayer2() {
-    return player2;
+    return players[1];
   }
 
   public void goalRight() {
@@ -54,40 +88,84 @@ public class Model {
     return timer;
   }
 
-  /** In pixels. */
-  public record Size(int width, int height) {}
+  private Direction[] inputs = new Direction[2];
 
-  /*   private Position position;
-  private Velocity velocity;
-  private Velocity speed = new Velocity(0, 0); */
-
-  /* public Model() {
-     this(new Position(200, 415), new Velocity(0, 0), new Size(80, 80));
-     // this(new Position(1350, 450), new Velocity(0, 0), new Size(80, 80));
-   }
-
-   public Model(Position position, Velocity velocity) {
-     this.position = position;
-     this.velocity = velocity;
-   }
-  */
-  public void startMatch() {
-    score.resetScore();
-    // reset puck
-    // reset strikers
-    timer.resetTimer();
-    timer.startTimer();
+  public void setInput(float xVelocity, float yVelocity, int strikernr) {
+    this.inputs[strikernr] = new Direction(xVelocity, yVelocity);
   }
 
   /** Advances the simulation by {@code dt} seconds. */
-  public void update(float dt) {
+  public void update(float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan bestämmas för nästa frame och visas
     timer.update(dt);
     if (timer.isFinished()) {
       // stop puck and players
       // announce winner
       return;
     }
-    player1.update(dt);
-    player2.update(dt);
+    moveObjects(objs, dt);
+    addInputs();
+
+    /* Puck-Wall collision */
+    wallcollision(objs);
+
+    /*
+     * To Be Implemented when Striker class appears
+     * Striker-Wall collision
+     * for each Striker {
+     * wallcollision(Striker);
+     * }
+     */
+    /* Striker-Puck collision */
+
+    //put small invisible "striker" on all sharp corners to bounce against
+
+  }
+  private void addInputs(){
+    for (int i = 0; i < players.length; i++) {
+      Direction velocity = new Direction(players[i].getDirection().x() * players[i].getSpeed() * 0.99f + inputs[i].x(), players[i].getDirection().y() * players[i].getSpeed() * 0.99f + inputs[i].y());
+      players[i].setSpeed(velocity.getMagnitudeAndNormalize());
+      players[i].setDirection(velocity);
+    }
+  }
+
+  private <T extends movable> void moveObjects(T[] objects, float dt){
+    for (int i = 0; i < objects.length; i++){ //1 is number of pucks
+      objects[i].setPosition(objects[i].getPosition().moveBy(new Direction(objects[i].getDirection().x() * objects[i].getSpeed(), objects[i].getDirection().y() * objects[i].getSpeed()), dt));
+    }
+  }
+
+  private <T extends movable> void wallcollision(T[] objects) {
+    final int topwall = 50;
+    final int bottomwall = 850;
+    final int leftwall = 100;
+    final int rightwall = 1700;
+    final int goalsize = 200;
+    for (int i = 0; i < objects.length; i++){
+      if (objects[i].getPosition().y() <= topwall + objects[i].getRadius()){
+        objects[i].setDirection(new Direction(objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y())));
+        objects[i].setPosition(new Position(objects[i].getPosition().x(), topwall + objects[i].getRadius()));
+      }
+      else if (objects[i].getPosition().y() >= bottomwall - objects[i].getRadius()){
+        objects[i].setDirection(new Direction(objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y()) * -1));
+        objects[i].setPosition(new Position(objects[i].getPosition().x(), bottomwall - objects[i].getRadius()));
+      }
+
+      if (objects[i].getPosition().x() <= leftwall + objects[i].getRadius() && !((objects[i].getPosition().y() < 450 + goalsize / 2 && objects[i].getPosition().y() > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)){
+        objects[i].setDirection(new Direction(Math.abs(objects[i].getDirection().x()), objects[i].getDirection().y()));
+        objects[i].setPosition(new Position(leftwall + objects[i].getRadius(), objects[i].getPosition().y()));
+      }
+      else if (objects[i].getPosition().x() >= rightwall - objects[i].getRadius() && !((objects[i].getPosition().y() < 450 + goalsize / 2 && objects[i].getPosition().y() > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)){
+        objects[i].setDirection(new Direction(Math.abs(objects[i].getDirection().x()) * -1, objects[i].getDirection().y()));
+        objects[i].setPosition(new Position(rightwall - objects[i].getRadius(), objects[i].getPosition().y()));
+      }
+    }
+  }
+  
+  public void startMatch() {
+    score.resetScore();
+    // reset puck
+    // reset strikers
+    timer.resetTimer();
+    timer.startTimer();
   }
 }

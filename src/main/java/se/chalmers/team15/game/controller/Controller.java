@@ -2,14 +2,14 @@ package se.chalmers.team15.game.controller;
 
 import static com.raylib.Raylib.*;
 
-import se.chalmers.team15.game.model.Model.Velocity;
-import se.chalmers.team15.game.model.Striker;
+import se.chalmers.team15.game.model.Model;
 
 public class Controller {
   /** Speed while an arrow key is held, in pixels per second. */
   private static final float SPEED = 60f;
 
-  private final Striker striker;
+  private final Model model;
+  private final int strikernr;
   private final int KEY_LEFT;
   private final int KEY_RIGHT;
   private final int KEY_UP;
@@ -32,8 +32,9 @@ public class Controller {
     }
   }*/
 
-  public Controller(Striker striker, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
-    this.striker = striker;
+  public Controller(Model model, int strikernr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
+    this.strikernr = strikernr;
+    this.model = model;
     this.KEY_LEFT = KEY_LEFT;
     this.KEY_RIGHT = KEY_RIGHT;
     this.KEY_UP = KEY_UP;
@@ -61,6 +62,6 @@ public class Controller {
       yVelocity += SPEED;
     }
 
-    striker.setVelocity(new Velocity(xVelocity, yVelocity));
+    model.setInput(xVelocity, yVelocity, strikernr);
   }
 }

@@ -112,7 +112,7 @@ public class Model {
     final int bottomwall = 850;
     final int leftwall = 100;
     final int rightwall = 1700;
-    final int goalsize = 200;
+    final int goalsize = 0;
 
     if (object.getPosition().y() <= topwall + object.getRadius()){
       object.setDirection(new Direction(object.getDirection().x(), Math.abs(object.getDirection().y())));

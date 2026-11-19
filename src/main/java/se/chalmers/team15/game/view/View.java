@@ -64,7 +64,7 @@ public class View {
     DrawCircle(
         Math.round(position.x()),
         Math.round(position.y()),
-        Math.round(radius - 10),
+        Math.round(radius * 0.8),
         GREEN);
   }
 

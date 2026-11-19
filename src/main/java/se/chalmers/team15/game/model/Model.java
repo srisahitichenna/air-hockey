@@ -38,7 +38,7 @@ public class Model {
     }
   }
 
-  private int MATCH_LENGTH = 300; // 5 min match length
+  private int MATCH_LENGTH = 180; // 3 min match length
 
   private final Rink rink = new Rink(1600, 800, 80);
   private final Puck puck = new Puck(900, 450);
@@ -95,8 +95,9 @@ public class Model {
   }
 
   /** Advances the simulation by {@code dt} seconds. */
-  public void update(float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan
-                                 // bestämmas för nästa frame och visas
+  public void update(
+      float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan
+    // bestämmas för nästa frame och visas
 
     /* Timer */
     timer.update(dt);
@@ -121,8 +122,10 @@ public class Model {
 
   private void addInputs() {
     for (int i = 0; i < players.length; i++) {
-      Direction velocity = new Direction(players[i].getDirection().x() * players[i].getSpeed() * 0.99f + inputs[i].x(),
-          players[i].getDirection().y() * players[i].getSpeed() * 0.99f + inputs[i].y());
+      Direction velocity =
+          new Direction(
+              players[i].getDirection().x() * players[i].getSpeed() * 0.99f + inputs[i].x(),
+              players[i].getDirection().y() * players[i].getSpeed() * 0.99f + inputs[i].y());
       players[i].setSpeed(velocity.getMagnitudeAndNormalize());
       players[i].setDirection(velocity);
     }
@@ -131,8 +134,13 @@ public class Model {
   private <T extends movable> void moveObjects(T[] objects, float dt) {
     for (int i = 0; i < objects.length; i++) { // 1 is number of pucks
       objects[i].setPosition(
-          objects[i].getPosition().moveBy(new Direction(objects[i].getDirection().x() * objects[i].getSpeed(),
-              objects[i].getDirection().y() * objects[i].getSpeed()), dt));
+          objects[i]
+              .getPosition()
+              .moveBy(
+                  new Direction(
+                      objects[i].getDirection().x() * objects[i].getSpeed(),
+                      objects[i].getDirection().y() * objects[i].getSpeed()),
+                  dt));
     }
   }
 
@@ -144,25 +152,35 @@ public class Model {
     final int goalsize = 200;
     for (int i = 0; i < objects.length; i++) {
       if (objects[i].getPosition().y() <= topwall + objects[i].getRadius()) {
-        objects[i].setDirection(new Direction(objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y())));
-        objects[i].setPosition(new Position(objects[i].getPosition().x(), topwall + objects[i].getRadius()));
+        objects[i].setDirection(
+            new Direction(objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y())));
+        objects[i].setPosition(
+            new Position(objects[i].getPosition().x(), topwall + objects[i].getRadius()));
       } else if (objects[i].getPosition().y() >= bottomwall - objects[i].getRadius()) {
-        objects[i]
-            .setDirection(new Direction(objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y()) * -1));
-        objects[i].setPosition(new Position(objects[i].getPosition().x(), bottomwall - objects[i].getRadius()));
+        objects[i].setDirection(
+            new Direction(
+                objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y()) * -1));
+        objects[i].setPosition(
+            new Position(objects[i].getPosition().x(), bottomwall - objects[i].getRadius()));
       }
 
       if (objects[i].getPosition().x() <= leftwall + objects[i].getRadius()
-          && !((objects[i].getPosition().y() < 450 + goalsize / 2 && objects[i].getPosition().y() > 450 - goalsize / 2)
+          && !((objects[i].getPosition().y() < 450 + goalsize / 2
+                  && objects[i].getPosition().y() > 450 - goalsize / 2)
               && objects[i].getClass() == Puck.class)) {
-        objects[i].setDirection(new Direction(Math.abs(objects[i].getDirection().x()), objects[i].getDirection().y()));
-        objects[i].setPosition(new Position(leftwall + objects[i].getRadius(), objects[i].getPosition().y()));
+        objects[i].setDirection(
+            new Direction(Math.abs(objects[i].getDirection().x()), objects[i].getDirection().y()));
+        objects[i].setPosition(
+            new Position(leftwall + objects[i].getRadius(), objects[i].getPosition().y()));
       } else if (objects[i].getPosition().x() >= rightwall - objects[i].getRadius()
-          && !((objects[i].getPosition().y() < 450 + goalsize / 2 && objects[i].getPosition().y() > 450 - goalsize / 2)
+          && !((objects[i].getPosition().y() < 450 + goalsize / 2
+                  && objects[i].getPosition().y() > 450 - goalsize / 2)
               && objects[i].getClass() == Puck.class)) {
-        objects[i]
-            .setDirection(new Direction(Math.abs(objects[i].getDirection().x()) * -1, objects[i].getDirection().y()));
-        objects[i].setPosition(new Position(rightwall - objects[i].getRadius(), objects[i].getPosition().y()));
+        objects[i].setDirection(
+            new Direction(
+                Math.abs(objects[i].getDirection().x()) * -1, objects[i].getDirection().y()));
+        objects[i].setPosition(
+            new Position(rightwall - objects[i].getRadius(), objects[i].getPosition().y()));
       }
     }
   }
@@ -192,5 +210,14 @@ public class Model {
     // reset strikers
     timer.resetTimer();
     timer.startTimer();
+  }
+
+  public Winner getWinner() {
+    if ((int) score.getPlayer1Score() == (int) score.getPlayer2Score()) {
+      return Winner.DRAW;
+    } else if ((int) score.getPlayer1Score() > (int) score.getPlayer2Score()) {
+      return Winner.PLAYER1;
+    }
+    return Winner.PLAYER2;
   }
 }

@@ -11,8 +11,8 @@ public class View {
   private final Model model;
 
   private final RinkView rinkView = new RinkView();
-
   private final ScoreView scoreView = new ScoreView(rinkView);
+  private final TimerView timerView = new TimerView(rinkView);
 
   public View(Model model) {
     this.model = model;
@@ -21,34 +21,26 @@ public class View {
   public void update() {
     BeginDrawing();
     drawMap();
+    drawStrikers();
     drawPuck();
+    drawScore();
+    drawTimer();
     EndDrawing();
   }
 
-  public void drawPlayers() {
-    /*
-     * BeginDrawing();
-     * Position position = model.getPosition();
-     * DrawCircle((int) position.x(), (int) position.y(), 1, MAROON);
-     * EndDrawing();
-     *
-     * This is a bad code, we need to implement this better
-     * i just tried to experiment - Charlie
-     *
-     *
-     */
-
+  public void drawMap() {
+    rinkView.drawRink(model.getRink());
   }
 
-  private void drawMap() {
-    ClearBackground(BLACK);
-    rinkView.drawRink(model.getRink());
-    /*
-     * Position p = new Position(900, 450);
-     * DrawCircle((int) p.x(), (int) p.y(), 50, MAROON);
-     * DrawCircle((int) p.x(), (int) p.y(), 20, RED);
-     * System.out.println(p.x() + ", " + p.y());
-     */
+  private void drawStrikers() {
+    Position position1 = model.getPlayer1().getPosition();
+    Position position2 = model.getPlayer2().getPosition();
+    float radius1 = model.getPlayer1().getRadius();
+    float radius2 = model.getPlayer2().getRadius();
+    DrawCircle(Math.round(position1.x()), Math.round(position1.y()), Math.round(radius1), MAROON);
+    DrawCircle(Math.round(position1.x()), Math.round(position1.y()), Math.round(radius1 * 0.4), RED);
+    DrawCircle(Math.round(position2.x()), Math.round(position2.y()), Math.round(radius2), DARKBLUE);
+    DrawCircle(Math.round(position2.x()), Math.round(position2.y()), Math.round(radius2 * 0.4), BLUE);
   }
 
   public void drawPuck() {
@@ -69,5 +61,10 @@ public class View {
   }
 
   public void drawScore() {
+    scoreView.drawScore(model);
+  }
+
+  public void drawTimer() {
+    timerView.drawTimer(model);
   }
 }

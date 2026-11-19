@@ -14,4 +14,6 @@ public interface movable {
     public void setDirection(Direction direction);
 
     public float getRadius();
+
+    public float getSpeed();
 }

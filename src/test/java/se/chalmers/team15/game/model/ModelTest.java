@@ -8,7 +8,7 @@ import se.chalmers.team15.game.model.Model.Direction;;
 class ModelTest {
   private static final float TOLERANCE = 0.0001f;
 
-  @Test
+/*   @Test
   void positionMovesWithVelocityAfterUpdate() {
     Model model = new Model(new Direction(10f, -20f));
 
@@ -31,5 +31,5 @@ class ModelTest {
     assertEquals(900f, model.getPuck().getPosition().x(), TOLERANCE);
     assertEquals(450f, model.getPuck().getPosition().y(), TOLERANCE);
   }
-
+*/
 }

@@ -7,44 +7,43 @@ import se.chalmers.team15.game.model.Model.Position;
 public class Puck implements movable {
     // Variables
     private Model.Position position;
-    private Model.Direction direction;
+    private Model.Direction direction = new Direction(0, 0);
     private float speed = 0;
 
     private static final float RADIUS = 30;
 
     // Making the puck
     public Puck(float xPos, float yPos) {
-        this.position = new Position(xPos, yPos);
-        this.direction = new Direction(0, 0);
+      this.position = new Position(xPos, yPos);
     }
 
     // Getters
     public Model.Position getPosition() {
-        return position;
+      return position;
     }
 
     public void setPosition(Model.Position position) {
-        this.position = position;
+      this.position = position;
     }
 
     public Model.Direction getDirection() {
-        return direction;
+      return direction;
     }
 
     public void setDirection(Direction direction) {
-        this.direction = direction;
+      this.direction = direction;
     }
 
     public float getRadius() {
-        return RADIUS;
+      return RADIUS;
     }
 
     public float getSpeed() {
-        return speed;
+      return speed;
     }
 
     public void setSpeed(float newSpeed) {
-        speed = newSpeed;
+      speed = newSpeed;
     }
 
 }

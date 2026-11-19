@@ -1,5 +1,6 @@
 package se.chalmers.team15.game;
 
+import static com.raylib.Colors.*;
 import static com.raylib.Raylib.*;
 
 import se.chalmers.team15.game.controller.Controller;
@@ -18,12 +19,20 @@ public class Main {
 
     Model model = new Model();
     View view = new View(model);
-    Controller controller = new Controller(model);
+
+    Controller controller = new Controller(model, 0, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
+    Controller controller2 = new Controller(model, 1, KEY_A, KEY_D, KEY_W, KEY_S);
+
+    model.startMatch();
 
     while (!WindowShouldClose()) {
-      model.update(GetFrameTime());
-      view.update();
+      float dt = GetFrameTime();
       controller.update();
+      controller2.update();
+      ClearBackground(BLACK);
+
+      model.update(dt);
+      view.update();
     }
 
     CloseWindow();

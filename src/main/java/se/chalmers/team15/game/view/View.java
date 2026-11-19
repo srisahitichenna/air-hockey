@@ -13,6 +13,7 @@ public class View {
   private final RinkView rinkView = new RinkView();
   private final ScoreView scoreView = new ScoreView(rinkView);
   private final TimerView timerView = new TimerView(rinkView);
+  private final WinnerView winnerView = new WinnerView();
 
   public View(Model model) {
     this.model = model;
@@ -25,6 +26,9 @@ public class View {
     drawPuck();
     drawScore();
     drawTimer();
+    if (model.getTimer().isFinished()) {
+      drawWinner();
+    }
     EndDrawing();
   }
 
@@ -38,9 +42,11 @@ public class View {
     float radius1 = model.getPlayer1().getRadius();
     float radius2 = model.getPlayer2().getRadius();
     DrawCircle(Math.round(position1.x()), Math.round(position1.y()), Math.round(radius1), MAROON);
-    DrawCircle(Math.round(position1.x()), Math.round(position1.y()), Math.round(radius1 * 0.4), RED);
+    DrawCircle(
+        Math.round(position1.x()), Math.round(position1.y()), Math.round(radius1 * 0.4), RED);
     DrawCircle(Math.round(position2.x()), Math.round(position2.y()), Math.round(radius2), DARKBLUE);
-    DrawCircle(Math.round(position2.x()), Math.round(position2.y()), Math.round(radius2 * 0.4), BLUE);
+    DrawCircle(
+        Math.round(position2.x()), Math.round(position2.y()), Math.round(radius2 * 0.4), BLUE);
   }
 
   public void drawPuck() {
@@ -48,16 +54,8 @@ public class View {
     Position position = puck.getPosition();
     float radius = puck.getRadius();
 
-    DrawCircle(
-        Math.round(position.x()),
-        Math.round(position.y()),
-        Math.round(radius),
-        LIME);
-    DrawCircle(
-        Math.round(position.x()),
-        Math.round(position.y()),
-        Math.round(radius * 0.8),
-        GREEN);
+    DrawCircle(Math.round(position.x()), Math.round(position.y()), Math.round(radius), LIME);
+    DrawCircle(Math.round(position.x()), Math.round(position.y()), Math.round(radius * 0.8), GREEN);
   }
 
   public void drawScore() {
@@ -66,5 +64,9 @@ public class View {
 
   public void drawTimer() {
     timerView.drawTimer(model);
+  }
+
+  public void drawWinner() {
+    winnerView.drawWinner(model);
   }
 }

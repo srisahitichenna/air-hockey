@@ -12,7 +12,7 @@ public class Striker implements movable {
     this.position = position;
   }
 
-  public void setPosition(Model.Position position) {
+  public void setPosition(Position position) {
     this.position = position;
   }
 

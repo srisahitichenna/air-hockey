@@ -78,7 +78,8 @@ public class Model {
     addInputs();
 
     /* Wall collision */
-    wallCollision(objs);
+    wallcollision(objs);
+    checkGoals();
 
     /* Striker-Puck collision */
     hitPuck(objs);
@@ -174,6 +175,19 @@ public class Model {
     }
   }
 
+    private void checkGoals() {
+        Rink.GoalSide goal = rink.checkGoal(puck.getPosition());   // use getPuck().getPosition() if you have no `puck` field
+        if (goal == Rink.GoalSide.NONE) return;
+
+
+        if (goal == Rink.GoalSide.LEFT) score.addPlayer2();   // right player scored
+        else score.addPlayer1();   // left player scored
+
+        puck.setPosition(new Position(rink.getWidth() / 2f, rink.getHeight() / 2f));
+        puck.setSpeed(0);
+    }
+
+  public void startMatch() {
   private <T extends movable> void friction(T[] objects) {
     for (int i = 0; i < objects.length; i++) {
       Direction direction = new Direction(

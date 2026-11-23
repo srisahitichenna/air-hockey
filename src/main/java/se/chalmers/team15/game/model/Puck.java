@@ -1,13 +1,12 @@
 package se.chalmers.team15.game.model;
 
-import se.chalmers.team15.game.model.Model.Direction;
 import se.chalmers.team15.game.model.Model.Position;
 
 /*hi  */
 public class Puck implements movable {
     // Variables
     private Model.Position position;
-    private Model.Direction direction = new Direction(0, 0);
+    private Direction direction = new Direction(0, 0);
     private float speed = 0;
 
     private static final float RADIUS = 30;
@@ -26,7 +25,7 @@ public class Puck implements movable {
       this.position = position;
     }
 
-    public Model.Direction getDirection() {
+    public Direction getDirection() {
       return direction;
     }
 

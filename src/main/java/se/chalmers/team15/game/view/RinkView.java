@@ -4,7 +4,6 @@ import static com.raylib.Colors.*;
 import static com.raylib.Raylib.*;
 
 import com.raylib.Raylib;
-import java.awt.*;
 import se.chalmers.team15.game.model.Rink;
 
 public class RinkView {

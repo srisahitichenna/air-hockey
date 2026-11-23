@@ -31,7 +31,7 @@ public class Rink {
 
   public float getGoalRadius(){ return goalRadius; }
 
-  public GoalSide checkGoal(Model.Position puck){
+  public GoalSide checkGoal(Position puck){
       float centerY = getHeight()/2f;
       boolean inGoalRange = Math.abs(puck.y() - centerY) < getGoalRadius();
       if (!inGoalRange) return GoalSide.NONE;

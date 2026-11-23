@@ -78,7 +78,7 @@ public class Model {
     addInputs();
 
     /* Wall collision */
-    wallcollision(objs);
+    wallCollision(objs);
     checkGoals();
 
     /* Striker-Puck collision */
@@ -187,7 +187,6 @@ public class Model {
         puck.setSpeed(0);
     }
 
-  public void startMatch() {
   private <T extends movable> void friction(T[] objects) {
     for (int i = 0; i < objects.length; i++) {
       Direction direction = new Direction(
@@ -222,10 +221,10 @@ public class Model {
 
   public Winner getWinner() {
     if ((int) score.getPlayer1Score() == (int) score.getPlayer2Score()) {
-      return Winner.DRAW;
-    } else if ((int) score.getPlayer1Score() > (int) score.getPlayer2Score()) {
-      return Winner.PLAYER1;
-    }
+      return Winner.DRAW; } 
+    else if ((int) score.getPlayer1Score() > (int) score.getPlayer2Score()) {
+      return Winner.PLAYER1; }
     return Winner.PLAYER2;
-  }
+  
+}
 }

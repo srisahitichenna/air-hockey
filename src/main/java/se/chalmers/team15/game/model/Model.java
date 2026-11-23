@@ -1,6 +1,8 @@
 package se.chalmers.team15.game.model;
 
+import java.sql.Time;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Model {
 
@@ -66,10 +68,10 @@ public class Model {
     // bestämmas för nästa frame och visas
 
     /* Timer */
-    timer.update(dt);
     if (timer.isFinished()) {
-      // stop puck and players
       // announce winner
+      // wait x seconds
+      startMatch();
       return;
     }
 
@@ -129,17 +131,17 @@ public class Model {
       if (y <= topwall + radius) {
         objects[i].setDirection(new Direction(dirX, Math.abs(dirY)));
         objects[i].setPosition(new Position(x, topwall + radius));
-      }
-      else if (y >= bottomwall - radius) {
+      } else if (y >= bottomwall - radius) {
         objects[i].setDirection(new Direction(dirX, Math.abs(dirY) * -1));
         objects[i].setPosition(new Position(x, bottomwall - radius));
       }
 
-      if (x <= leftwall + radius && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+      if (x <= leftwall + radius
+          && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
         objects[i].setDirection(new Direction(Math.abs(dirX), dirY));
         objects[i].setPosition(new Position(leftwall + radius, y));
-      }
-      else if (x >= rightwall - radius && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+      } else if (x >= rightwall - radius
+          && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
         objects[i].setDirection(new Direction(Math.abs(dirX) * -1, dirY));
         objects[i].setPosition(new Position(rightwall - radius, y));
       }
@@ -147,8 +149,7 @@ public class Model {
       if (x >= middlewall - radius && objects[i].equals(getPlayer2())) {
         objects[i].setDirection(new Direction(Math.abs(dirX) * -1, dirY));
         objects[i].setPosition(new Position(middlewall - radius, y));
-      }
-      else if (x <= middlewall + radius && objects[i].equals(getPlayer1())){
+      } else if (x <= middlewall + radius && objects[i].equals(getPlayer1())) {
         objects[i].setDirection(new Direction(Math.abs(dirX), dirY));
         objects[i].setPosition(new Position(middlewall + radius, y));
       }
@@ -191,6 +192,7 @@ public class Model {
 
     /* Resets puck */
     puck.setPosition(new Position(900, 450));
+    puck.setDirection(new Direction(0, 0));
 
     /* Resets strikers with random pos */
     Random random = new Random();
@@ -200,6 +202,8 @@ public class Model {
     Player2Pos = random.nextInt(450, 550);
     getPlayer1().setPosition(new Position(1350, Player2Pos));
     getPlayer2().setPosition(new Position(450, Player1Pos));
+    getPlayer1().setDirection(new Direction(0, 0));
+    getPlayer2().setDirection(new Direction(0, 0));
 
     /* Resets timer, and starts timer */
     timer.resetTimer();

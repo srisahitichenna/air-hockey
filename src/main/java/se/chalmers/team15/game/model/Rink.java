@@ -4,6 +4,8 @@ public class Rink {
   private final float width;
   private final float height;
   private final float cornerRadius;
+  private static final float goalRadius =  100f;
+  public enum goalSide {none, left, right}
 
   public Rink(float width, float height, float cornerRadius) {
     this.width = width;
@@ -22,4 +24,15 @@ public class Rink {
   public float getCornerRadius() {
     return cornerRadius;
   }
+
+  //public goalSide checkGoal(Model.Position )
+
+  public float getGoalRadius(){ return goalRadius; }
+
+
+
+
 }
+
+
+

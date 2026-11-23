@@ -1,13 +1,8 @@
 package se.chalmers.team15.game.model;
 
-public class Model {
+import java.util.Random;
 
-  /** In pixels, measured from the top-left corner of the window. */
-  public record Position(float x, float y) {
-    public Position moveBy(Direction velocity, float dt) {
-      return new Position(this.x + velocity.x() * dt, this.y + velocity.y() * dt);
-    }
-  }
+public class Model {
 
   private int MATCH_LENGTH = 180; // 3 min match length
 
@@ -83,20 +78,22 @@ public class Model {
     addInputs();
 
     /* Wall collision */
-    wallcollision(objs);
+    wallCollision(objs);
 
     /* Striker-Puck collision */
-    hitpuck(objs);
+    hitPuck(objs);
+
+    /* Friction */
+    friction(objs);
 
     // put small invisible "striker" on all sharp corners to bounce against
   }
 
   private void addInputs() {
     for (int i = 0; i < players.length; i++) {
-      Direction velocity =
-          new Direction(
-              players[i].getDirection().x() * players[i].getSpeed() * 0.99f + inputs[i].x(),
-              players[i].getDirection().y() * players[i].getSpeed() * 0.99f + inputs[i].y());
+      Direction velocity = new Direction(
+          players[i].getDirection().x() * players[i].getSpeed() + inputs[i].x(),
+          players[i].getDirection().y() * players[i].getSpeed() + inputs[i].y());
       players[i].setSpeed(velocity.getMagnitudeAndNormalize());
       players[i].setDirection(velocity);
     }
@@ -115,7 +112,7 @@ public class Model {
     }
   }
 
-  private <T extends movable> void wallcollision(T[] objects) {
+  private <T extends movable> void wallCollision(T[] objects) {
     final int topwall = 50;
     final int middlewall = 900;
     final int bottomwall = 850;
@@ -158,7 +155,7 @@ public class Model {
     }
   }
 
-  private <T extends movable> void hitpuck(T[] strikers) {
+  private <T extends movable> void hitPuck(T[] strikers) {
     for (int i = 0; i < strikers.length; i++) {
       final float xdiff = strikers[i].getPosition().x() - puck.getPosition().x();
       final float ydiff = strikers[i].getPosition().y() - puck.getPosition().y();
@@ -177,10 +174,34 @@ public class Model {
     }
   }
 
-  public void startMatch() {
+  private <T extends movable> void friction(T[] objects) {
+    for (int i = 0; i < objects.length; i++) {
+      Direction direction = new Direction(
+          objects[i].getDirection().x() * objects[i].getSpeed() * 0.997f,
+          objects[i].getDirection().y() * objects[i].getSpeed() * 0.997f);
+      objects[i].setSpeed(direction.getMagnitudeAndNormalize());
+      objects[i].setDirection(direction);
+
+    }
+  }
+
+  public <T extends movable> void startMatch() {
+    /* Resets score */
     score.resetScore();
-    // reset puck
-    // reset strikers
+
+    /* Resets puck */
+    puck.setPosition(new Position(900, 450));
+
+    /* Resets strikers with random pos */
+    Random random = new Random();
+    int Player1Pos;
+    int Player2Pos;
+    Player1Pos = random.nextInt(450, 550);
+    Player2Pos = random.nextInt(450, 550);
+    getPlayer1().setPosition(new Position(1350, Player2Pos));
+    getPlayer2().setPosition(new Position(450, Player1Pos));
+
+    /* Resets timer, and starts timer */
     timer.resetTimer();
     timer.startTimer();
   }

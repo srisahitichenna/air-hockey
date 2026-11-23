@@ -10,7 +10,7 @@ import se.chalmers.team15.game.view.View;
 public class Main {
   private static final int SCREEN_WIDTH = 1800;
   private static final int SCREEN_HEIGHT = 900;
-  private static final int FRAMES_PER_SECOND = 60;
+  private static final int FRAMES_PER_SECOND = 200;
   private static final String TITLE = "Game";
 
   public static void main(String[] args) {

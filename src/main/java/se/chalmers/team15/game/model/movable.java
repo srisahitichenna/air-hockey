@@ -14,4 +14,10 @@ public interface movable {
     public float getRadius();
 
     public float getSpeed();
+
+    public void setSpeed(float newspeed);
+
+    public float getWeight();
+
+    public void setWeight(float newWeight);
 }

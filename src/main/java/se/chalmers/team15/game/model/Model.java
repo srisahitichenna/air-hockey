@@ -93,25 +93,22 @@ public class Model {
 
   private void addInputs() {
     for (int i = 0; i < players.length; i++) {
-      Direction velocity =
-          new Direction(
-              players[i].getDirection().x() * players[i].getSpeed() * 0.99f + inputs[i].x(),
-              players[i].getDirection().y() * players[i].getSpeed() * 0.99f + inputs[i].y());
+      float x = players[i].getDirection().x();
+      float y = players[i].getDirection().y();
+      float speed = players[i].getSpeed();
+      Direction velocity = new Direction(x * speed + inputs[i].x(), y * speed + inputs[i].y());
       players[i].setSpeed(velocity.getMagnitudeAndNormalize());
       players[i].setDirection(velocity);
     }
   }
 
   private <T extends movable> void moveObjects(T[] objects, float dt) {
-    for (int i = 0; i < objects.length; i++) { // 1 is number of pucks
-      objects[i].setPosition(
-          objects[i]
-              .getPosition()
-              .moveBy(
-                  new Direction(
-                      objects[i].getDirection().x() * objects[i].getSpeed(),
-                      objects[i].getDirection().y() * objects[i].getSpeed()),
-                  dt));
+    for (int i = 0; i < objects.length; i++) {
+      Position pos = objects[i].getPosition();
+      float x = objects[i].getDirection().x();
+      float y = objects[i].getDirection().y();
+      float speed = objects[i].getSpeed();
+      objects[i].setPosition(pos.moveBy(new Direction(x * speed, y * speed), dt));
     }
   }
 

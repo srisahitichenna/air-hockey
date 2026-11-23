@@ -91,10 +91,10 @@ public class Model {
 
   private void addInputs() {
     for (int i = 0; i < players.length; i++) {
-      float x = players[i].getDirection().x();
-      float y = players[i].getDirection().y();
+      float dirX = players[i].getDirection().x();
+      float dirY = players[i].getDirection().y();
       float speed = players[i].getSpeed();
-      Direction velocity = new Direction(x * speed + inputs[i].x(), y * speed + inputs[i].y());
+      Direction velocity = new Direction(dirX * speed + inputs[i].x(), dirY * speed + inputs[i].y());
       players[i].setSpeed(velocity.getMagnitudeAndNormalize());
       players[i].setDirection(velocity);
     }
@@ -103,10 +103,10 @@ public class Model {
   private <T extends movable> void moveObjects(T[] objects, float dt) {
     for (int i = 0; i < objects.length; i++) {
       Position pos = objects[i].getPosition();
-      float x = objects[i].getDirection().x();
-      float y = objects[i].getDirection().y();
+      float dirX = objects[i].getDirection().x();
+      float dirY = objects[i].getDirection().y();
       float speed = objects[i].getSpeed();
-      objects[i].setPosition(pos.moveBy(new Direction(x * speed, y * speed), dt));
+      objects[i].setPosition(pos.moveBy(new Direction(dirX * speed, dirY * speed), dt));
     }
   }
 

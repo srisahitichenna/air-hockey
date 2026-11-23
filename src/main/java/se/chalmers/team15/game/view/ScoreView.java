@@ -3,7 +3,6 @@ package se.chalmers.team15.game.view;
 import static com.raylib.Colors.*;
 import static com.raylib.Raylib.*;
 
-import java.awt.*;
 import se.chalmers.team15.game.model.Model;
 import se.chalmers.team15.game.model.Rink;
 

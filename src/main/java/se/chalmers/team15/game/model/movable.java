@@ -1,15 +1,13 @@
 package se.chalmers.team15.game.model;
 
-import se.chalmers.team15.game.model.Model.Direction;
-
 public interface movable {
 
     // Getters
-    public Model.Position getPosition();
+    public Position getPosition();
 
-    public void setPosition(Model.Position position);
+    public void setPosition(Position position);
 
-    public Model.Direction getDirection();
+    public Direction getDirection();
 
     public void setDirection(Direction direction);
 

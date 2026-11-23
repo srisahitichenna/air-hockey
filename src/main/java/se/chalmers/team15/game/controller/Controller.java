@@ -9,7 +9,7 @@ public class Controller {
   private static final float SPEED = 20f;
 
   private final Model model;
-  private final int strikernr;
+  private final int strikerNr;
   private final int KEY_LEFT;
   private final int KEY_RIGHT;
   private final int KEY_UP;
@@ -34,8 +34,8 @@ public class Controller {
    * }
    */
 
-  public Controller(Model model, int strikernr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
-    this.strikernr = strikernr;
+  public Controller(Model model, int strikerNr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
+    this.strikerNr = strikerNr;
     this.model = model;
     this.KEY_LEFT = KEY_LEFT;
     this.KEY_RIGHT = KEY_RIGHT;
@@ -64,6 +64,6 @@ public class Controller {
       yVelocity += SPEED;
     }
 
-    model.setInput(xVelocity, yVelocity, strikernr);
+    model.setInput(xVelocity, yVelocity, strikerNr);
   }
 }

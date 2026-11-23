@@ -4,7 +4,7 @@ import static com.raylib.Colors.*;
 import static com.raylib.Raylib.*;
 
 import se.chalmers.team15.game.model.Model;
-import se.chalmers.team15.game.model.Model.Position;
+import se.chalmers.team15.game.model.Position;
 import se.chalmers.team15.game.model.Puck;
 
 public class View {

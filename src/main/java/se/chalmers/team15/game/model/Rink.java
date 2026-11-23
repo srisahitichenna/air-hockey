@@ -1,11 +1,15 @@
 package se.chalmers.team15.game.model;
 
+import se.chalmers.team15.game.view.RinkView;
+
+import static com.raylib.Raylib.GetScreenWidth;
+
 public class Rink {
   private final float width;
   private final float height;
   private final float cornerRadius;
   private static final float goalRadius =  100f;
-  public enum goalSide {none, left, right}
+  public enum GoalSide {NONE, LEFT, RIGHT}
 
   public Rink(float width, float height, float cornerRadius) {
     this.width = width;
@@ -25,11 +29,17 @@ public class Rink {
     return cornerRadius;
   }
 
-  //public goalSide checkGoal(Model.Position )
-
   public float getGoalRadius(){ return goalRadius; }
 
+  public GoalSide checkGoal(Model.Position puck){
+      float centerY = getHeight()/2f;
+      boolean inGoalRange = Math.abs(puck.y() - centerY) < getGoalRadius();
+      if (!inGoalRange) return GoalSide.NONE;
 
+      if (puck.x() <=  (GetScreenWidth() - getWidth())/2) return GoalSide.LEFT;
+      if (puck.x() >= getWidth() + (GetScreenWidth() -getWidth())/2) return GoalSide.RIGHT;
+      return GoalSide.NONE;
+  }
 
 
 }

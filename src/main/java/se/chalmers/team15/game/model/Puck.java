@@ -1,11 +1,9 @@
 package se.chalmers.team15.game.model;
 
-import se.chalmers.team15.game.model.Model.Position;
-
 /*hi  */
 public class Puck implements movable {
     // Variables
-    private Model.Position position;
+    private Position position;
     private Direction direction = new Direction(0, 0);
     private float speed = 0;
 
@@ -17,11 +15,11 @@ public class Puck implements movable {
     }
 
     // Getters
-    public Model.Position getPosition() {
+    public Position getPosition() {
       return position;
     }
 
-    public void setPosition(Model.Position position) {
+    public void setPosition(Position position) {
       this.position = position;
     }
 

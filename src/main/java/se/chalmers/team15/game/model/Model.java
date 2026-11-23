@@ -2,13 +2,6 @@ package se.chalmers.team15.game.model;
 
 public class Model {
 
-  /** In pixels, measured from the top-left corner of the window. */
-  public record Position(float x, float y) {
-    public Position moveBy(Direction velocity, float dt) {
-      return new Position(this.x + velocity.x() * dt, this.y + velocity.y() * dt);
-    }
-  }
-
   private int MATCH_LENGTH = 180; // 3 min match length
 
   private final Rink rink = new Rink(1600, 800, 80);
@@ -83,10 +76,10 @@ public class Model {
     addInputs();
 
     /* Wall collision */
-    wallcollision(objs);
+    wallCollision(objs);
 
     /* Striker-Puck collision */
-    hitpuck(objs);
+    hitPuck(objs);
 
     // put small invisible "striker" on all sharp corners to bounce against
   }
@@ -115,7 +108,7 @@ public class Model {
     }
   }
 
-  private <T extends movable> void wallcollision(T[] objects) {
+  private <T extends movable> void wallCollision(T[] objects) {
     final int topwall = 50;
     final int bottomwall = 850;
     final int leftwall = 100;
@@ -156,7 +149,7 @@ public class Model {
     }
   }
 
-  private <T extends movable> void hitpuck(T[] strikers) {
+  private <T extends movable> void hitPuck(T[] strikers) {
     for (int i = 0; i < strikers.length; i++) {
       final float xdiff = strikers[i].getPosition().x() - puck.getPosition().x();
       final float ydiff = strikers[i].getPosition().y() - puck.getPosition().y();

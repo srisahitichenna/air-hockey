@@ -3,9 +3,9 @@ package se.chalmers.team15.game.model;
 public interface movable {
 
     // Getters
-    public Model.Position getPosition();
+    public Position getPosition();
 
-    public void setPosition(Model.Position position);
+    public void setPosition(Position position);
 
     public Direction getDirection();
 

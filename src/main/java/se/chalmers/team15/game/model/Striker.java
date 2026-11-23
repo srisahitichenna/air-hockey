@@ -1,7 +1,5 @@
 package se.chalmers.team15.game.model;
 
-import se.chalmers.team15.game.model.Model.Position;
-
 public class Striker implements movable {
   private Position position;
   private Direction direction = new Direction(0, 0);
@@ -13,7 +11,7 @@ public class Striker implements movable {
     this.position = position;
   }
   
-  public void setPosition(Model.Position position) {
+  public void setPosition(Position position) {
     this.position = position;
   }
 

@@ -117,41 +117,43 @@ public class Model {
 
   private <T extends movable> void wallcollision(T[] objects) {
     final int topwall = 50;
+    final int middlewall = 900;
     final int bottomwall = 850;
     final int leftwall = 100;
     final int rightwall = 1700;
     final int goalsize = 200;
     for (int i = 0; i < objects.length; i++) {
-      if (objects[i].getPosition().y() <= topwall + objects[i].getRadius()) {
-        objects[i].setDirection(
-            new Direction(objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y())));
-        objects[i].setPosition(
-            new Position(objects[i].getPosition().x(), topwall + objects[i].getRadius()));
-      } else if (objects[i].getPosition().y() >= bottomwall - objects[i].getRadius()) {
-        objects[i].setDirection(
-            new Direction(
-                objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y()) * -1));
-        objects[i].setPosition(
-            new Position(objects[i].getPosition().x(), bottomwall - objects[i].getRadius()));
+      float x = objects[i].getPosition().x();
+      float y = objects[i].getPosition().y();
+      float dirX = objects[i].getDirection().x();
+      float dirY = objects[i].getDirection().y();
+      float radius = objects[i].getRadius();
+
+      if (y <= topwall + radius) {
+        objects[i].setDirection(new Direction(dirX, Math.abs(dirY)));
+        objects[i].setPosition(new Position(x, topwall + radius));
+      }
+      else if (y >= bottomwall - radius) {
+        objects[i].setDirection(new Direction(dirX, Math.abs(dirY) * -1));
+        objects[i].setPosition(new Position(x, bottomwall - radius));
       }
 
-      if (objects[i].getPosition().x() <= leftwall + objects[i].getRadius()
-          && !((objects[i].getPosition().y() < 450 + goalsize / 2
-                  && objects[i].getPosition().y() > 450 - goalsize / 2)
-              && objects[i].getClass() == Puck.class)) {
-        objects[i].setDirection(
-            new Direction(Math.abs(objects[i].getDirection().x()), objects[i].getDirection().y()));
-        objects[i].setPosition(
-            new Position(leftwall + objects[i].getRadius(), objects[i].getPosition().y()));
-      } else if (objects[i].getPosition().x() >= rightwall - objects[i].getRadius()
-          && !((objects[i].getPosition().y() < 450 + goalsize / 2
-                  && objects[i].getPosition().y() > 450 - goalsize / 2)
-              && objects[i].getClass() == Puck.class)) {
-        objects[i].setDirection(
-            new Direction(
-                Math.abs(objects[i].getDirection().x()) * -1, objects[i].getDirection().y()));
-        objects[i].setPosition(
-            new Position(rightwall - objects[i].getRadius(), objects[i].getPosition().y()));
+      if (x <= leftwall + radius && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+        objects[i].setDirection(new Direction(Math.abs(dirX), dirY));
+        objects[i].setPosition(new Position(leftwall + radius, y));
+      }
+      else if (x >= rightwall - radius && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+        objects[i].setDirection(new Direction(Math.abs(dirX) * -1, dirY));
+        objects[i].setPosition(new Position(rightwall - radius, y));
+      }
+
+      if (x >= middlewall - radius && objects[i].equals(getPlayer2())) {
+        objects[i].setDirection(new Direction(Math.abs(dirX) * -1, dirY));
+        objects[i].setPosition(new Position(middlewall - radius, y));
+      }
+      else if (x <= middlewall + radius && objects[i].equals(getPlayer1())){
+        objects[i].setDirection(new Direction(Math.abs(dirX), dirY));
+        objects[i].setPosition(new Position(middlewall + radius, y));
       }
     }
   }

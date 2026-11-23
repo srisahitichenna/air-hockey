@@ -3,7 +3,7 @@ package se.chalmers.team15.game.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import se.chalmers.team15.game.model.Model.Direction;;
+import se.chalmers.team15.game.model.Direction;;
 
 class ModelTest {
   private static final float TOLERANCE = 0.0001f;

@@ -1,42 +1,8 @@
 package se.chalmers.team15.game.model;
 
+import java.util.Random;
+
 public class Model {
-
-  /** In pixels, measured from the top-left corner of the window. */
-  public record Position(float x, float y) {
-    public Position moveBy(Direction velocity, float dt) {
-      return new Position(this.x + velocity.x() * dt, this.y + velocity.y() * dt);
-    }
-  }
-
-  /** In pixels per second. */
-  public static class Direction {
-    private float x;
-    private float y;
-
-    public Direction(float x, float y) {
-      this.x = x;
-      this.y = y;
-    }
-
-    public float getMagnitudeAndNormalize() {
-      if (this.x == 0 && this.y == 0) {
-        return 0;
-      }
-      float magnitude = (float) Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
-      this.x = x / magnitude;
-      this.y = y / magnitude;
-      return magnitude;
-    }
-
-    public float x() {
-      return this.x;
-    }
-
-    public float y() {
-      return this.y;
-    }
-  }
 
   private int MATCH_LENGTH = 180; // 3 min match length
 
@@ -116,17 +82,19 @@ public class Model {
     checkGoals();
 
     /* Striker-Puck collision */
-    hitpuck(objs);
+    hitPuck(objs);
+
+    /* Friction */
+    friction(objs);
 
     // put small invisible "striker" on all sharp corners to bounce against
   }
 
   private void addInputs() {
     for (int i = 0; i < players.length; i++) {
-      Direction velocity =
-          new Direction(
-              players[i].getDirection().x() * players[i].getSpeed() * 0.99f + inputs[i].x(),
-              players[i].getDirection().y() * players[i].getSpeed() * 0.99f + inputs[i].y());
+      Direction velocity = new Direction(
+          players[i].getDirection().x() * players[i].getSpeed() + inputs[i].x(),
+          players[i].getDirection().y() * players[i].getSpeed() + inputs[i].y());
       players[i].setSpeed(velocity.getMagnitudeAndNormalize());
       players[i].setDirection(velocity);
     }
@@ -145,48 +113,50 @@ public class Model {
     }
   }
 
-  private <T extends movable> void wallcollision(T[] objects) {
+  private <T extends movable> void wallCollision(T[] objects) {
     final int topwall = 50;
+    final int middlewall = 900;
     final int bottomwall = 850;
     final int leftwall = 100;
     final int rightwall = 1700;
     final int goalsize = 200;
     for (int i = 0; i < objects.length; i++) {
-      if (objects[i].getPosition().y() <= topwall + objects[i].getRadius()) {
-        objects[i].setDirection(
-            new Direction(objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y())));
-        objects[i].setPosition(
-            new Position(objects[i].getPosition().x(), topwall + objects[i].getRadius()));
-      } else if (objects[i].getPosition().y() >= bottomwall - objects[i].getRadius()) {
-        objects[i].setDirection(
-            new Direction(
-                objects[i].getDirection().x(), Math.abs(objects[i].getDirection().y()) * -1));
-        objects[i].setPosition(
-            new Position(objects[i].getPosition().x(), bottomwall - objects[i].getRadius()));
+      float x = objects[i].getPosition().x();
+      float y = objects[i].getPosition().y();
+      float dirX = objects[i].getDirection().x();
+      float dirY = objects[i].getDirection().y();
+      float radius = objects[i].getRadius();
+
+      if (y <= topwall + radius) {
+        objects[i].setDirection(new Direction(dirX, Math.abs(dirY)));
+        objects[i].setPosition(new Position(x, topwall + radius));
+      }
+      else if (y >= bottomwall - radius) {
+        objects[i].setDirection(new Direction(dirX, Math.abs(dirY) * -1));
+        objects[i].setPosition(new Position(x, bottomwall - radius));
       }
 
-      if (objects[i].getPosition().x() <= leftwall + objects[i].getRadius()
-          && !((objects[i].getPosition().y() < 450 + goalsize / 2
-                  && objects[i].getPosition().y() > 450 - goalsize / 2)
-              && objects[i].getClass() == Puck.class)) {
-        objects[i].setDirection(
-            new Direction(Math.abs(objects[i].getDirection().x()), objects[i].getDirection().y()));
-        objects[i].setPosition(
-            new Position(leftwall + objects[i].getRadius(), objects[i].getPosition().y()));
-      } else if (objects[i].getPosition().x() >= rightwall - objects[i].getRadius()
-          && !((objects[i].getPosition().y() < 450 + goalsize / 2
-                  && objects[i].getPosition().y() > 450 - goalsize / 2)
-              && objects[i].getClass() == Puck.class)) {
-        objects[i].setDirection(
-            new Direction(
-                Math.abs(objects[i].getDirection().x()) * -1, objects[i].getDirection().y()));
-        objects[i].setPosition(
-            new Position(rightwall - objects[i].getRadius(), objects[i].getPosition().y()));
+      if (x <= leftwall + radius && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+        objects[i].setDirection(new Direction(Math.abs(dirX), dirY));
+        objects[i].setPosition(new Position(leftwall + radius, y));
+      }
+      else if (x >= rightwall - radius && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+        objects[i].setDirection(new Direction(Math.abs(dirX) * -1, dirY));
+        objects[i].setPosition(new Position(rightwall - radius, y));
+      }
+
+      if (x >= middlewall - radius && objects[i].equals(getPlayer2())) {
+        objects[i].setDirection(new Direction(Math.abs(dirX) * -1, dirY));
+        objects[i].setPosition(new Position(middlewall - radius, y));
+      }
+      else if (x <= middlewall + radius && objects[i].equals(getPlayer1())){
+        objects[i].setDirection(new Direction(Math.abs(dirX), dirY));
+        objects[i].setPosition(new Position(middlewall + radius, y));
       }
     }
   }
 
-  private <T extends movable> void hitpuck(T[] strikers) {
+  private <T extends movable> void hitPuck(T[] strikers) {
     for (int i = 0; i < strikers.length; i++) {
       final float xdiff = strikers[i].getPosition().x() - puck.getPosition().x();
       final float ydiff = strikers[i].getPosition().y() - puck.getPosition().y();
@@ -218,9 +188,34 @@ public class Model {
     }
 
   public void startMatch() {
+  private <T extends movable> void friction(T[] objects) {
+    for (int i = 0; i < objects.length; i++) {
+      Direction direction = new Direction(
+          objects[i].getDirection().x() * objects[i].getSpeed() * 0.997f,
+          objects[i].getDirection().y() * objects[i].getSpeed() * 0.997f);
+      objects[i].setSpeed(direction.getMagnitudeAndNormalize());
+      objects[i].setDirection(direction);
+
+    }
+  }
+
+  public <T extends movable> void startMatch() {
+    /* Resets score */
     score.resetScore();
-    // reset puck
-    // reset strikers
+
+    /* Resets puck */
+    puck.setPosition(new Position(900, 450));
+
+    /* Resets strikers with random pos */
+    Random random = new Random();
+    int Player1Pos;
+    int Player2Pos;
+    Player1Pos = random.nextInt(450, 550);
+    Player2Pos = random.nextInt(450, 550);
+    getPlayer1().setPosition(new Position(1350, Player2Pos));
+    getPlayer2().setPosition(new Position(450, Player1Pos));
+
+    /* Resets timer, and starts timer */
     timer.resetTimer();
     timer.startTimer();
   }

@@ -6,7 +6,7 @@ import se.chalmers.team15.game.model.Model;
 
 public class Controller {
   /** Speed while an arrow key is held, in pixels per second. */
-  private static final float SPEED = 60f;
+  private static final float SPEED = 20f;
 
   private final Model model;
   private final int strikernr;
@@ -15,22 +15,24 @@ public class Controller {
   private final int KEY_UP;
   private final int KEY_DOWN;
 
-  /*private enum Key {
-    LEFT(KEY_LEFT, -1, 0),
-    RIGHT(KEY_RIGHT, 1, 0),
-    UP(KEY_UP, 0, -1),
-    DOWN(KEY_DOWN, 0, 1);
-
-    private final int raylibCode;
-    private final float xVel;
-    private final float yVel;
-
-    Key(int raylibCode, int xVel, int yVel) {
-      this.raylibCode = raylibCode;
-      this.xVel = xVel * SPEED;
-      this.yVel = yVel * SPEED;
-    }
-  }*/
+  /*
+   * private enum Key {
+   * LEFT(KEY_LEFT, -1, 0),
+   * RIGHT(KEY_RIGHT, 1, 0),
+   * UP(KEY_UP, 0, -1),
+   * DOWN(KEY_DOWN, 0, 1);
+   * 
+   * private final int raylibCode;
+   * private final float xVel;
+   * private final float yVel;
+   * 
+   * Key(int raylibCode, int xVel, int yVel) {
+   * this.raylibCode = raylibCode;
+   * this.xVel = xVel * SPEED;
+   * this.yVel = yVel * SPEED;
+   * }
+   * }
+   */
 
   public Controller(Model model, int strikernr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
     this.strikernr = strikernr;

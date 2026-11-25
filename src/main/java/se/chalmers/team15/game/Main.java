@@ -6,6 +6,7 @@ import static com.raylib.Raylib.*;
 import se.chalmers.team15.game.controller.Controller;
 import se.chalmers.team15.game.model.Model;
 import se.chalmers.team15.game.view.View;
+import se.chalmers.team15.game.view.WinnerView;
 
 public class Main {
   private static final int SCREEN_WIDTH = 1800;
@@ -20,8 +21,13 @@ public class Main {
     Model model = new Model();
     View view = new View(model);
 
-    Controller controller = new Controller(model, 0, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
-    Controller controller2 = new Controller(model, 1, KEY_A, KEY_D, KEY_W, KEY_S);
+    WinnerView winnerView = new WinnerView();
+
+    Controller controller = new Controller(
+        model, 0, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, winnerView);
+
+    Controller controller2 = new Controller(
+        model, 1, KEY_A, KEY_D, KEY_W, KEY_S, winnerView);
 
     model.startMatch();
 

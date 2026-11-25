@@ -63,17 +63,10 @@ public class Model {
   }
 
   /** Advances the simulation by {@code dt} seconds. */
-  public void update(
-      float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan
-    // bestämmas för nästa frame och visas
+  public void update(float dt) {
 
     /* Timer */
-    if (timer.isFinished()) {
-      // announce winner
-      // wait x seconds
-      startMatch();
-      return;
-    }
+    timer.update(dt);
 
     /* Movement */
     moveObjects(objs, dt);
@@ -87,8 +80,6 @@ public class Model {
 
     /* Friction */
     friction(objs);
-
-    // put small invisible "striker" on all sharp corners to bounce against
   }
 
   private void addInputs() {

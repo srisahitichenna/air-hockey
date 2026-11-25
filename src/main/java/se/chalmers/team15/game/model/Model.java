@@ -121,15 +121,15 @@ public class Model {
     float[] stationaryverticalwalls = new float[3];
     float[] stationaryhorizontalwalls = new float[2];
     //change to real values
-    stationarycoords[0] = new Position(1, 2);
-    stationarycoords[1] = new Position(2, 2);
-    stationarycoords[2] = new Position(3, 3);
-    stationarycoords[3] = new Position(4, 4);
-    stationaryverticalwalls[0] = 1;
-    stationaryverticalwalls[1] = 2;
-    stationaryverticalwalls[2] = 3;
-    stationaryhorizontalwalls[0] = 0;
-    stationaryhorizontalwalls[1] = 1;
+    stationarycoords[0] = new Position(100, 350);//left top goal corner
+    stationarycoords[1] = new Position(1700, 550);//left bottom goal corner
+    stationarycoords[2] = new Position(100, 350);//right top goal corner
+    stationarycoords[3] = new Position(1700, 550);//right bottom goal corner
+    stationaryverticalwalls[0] = 100;//leftwall
+    stationaryverticalwalls[1] = 900;//middlewall
+    stationaryverticalwalls[2] = 1700;//rightwall
+    stationaryhorizontalwalls[0] = 50;//topwall
+    stationaryhorizontalwalls[1] = 850;//bottomwall
     //
     double maxpercentage = 1;
     while(true) {
@@ -166,39 +166,44 @@ public class Model {
         }
         for(int j = 0; j < stationarycoords.length; i++){
           //Vars
-          Direction v = movingobjs[i].getDirection();
-          float vx = v.x();
-          float vy = v.y();
-          float m = movingobjs[i].getSpeed();
-          float x3 = stationarycoords[j].x();
-          float y3 = stationarycoords[j].y();
           float x1 = movingobjs[i].getPosition().x();
           float y1 = movingobjs[i].getPosition().y();
-          float r1 = movingobjs[i].getRadius();
-          //Calc
-          double A = Math.pow(m, 2) * (Math.pow(vx, 2) + Math.pow(vy, 2));
-          double B = -2 * m * (vx * (x3 - x1) + vy * (y3 - y1));
-          double C = Math.pow((x3 - x1), 2) + Math.pow((y3 - y1), 2) - Math.pow((r1), 2);
-          double a1 = (-B + Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
-          double a2 = (-B - Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
-          if (a1 <= maxpercentage && a1 >= 0){
-            if (a2 <= maxpercentage && a2 >= 0)
-              pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1 < a2 ? a1 : a2));
-            else
-              pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1));
+          if(x1 > stationaryverticalwalls[0] && x1 < stationaryverticalwalls[2] && y1 > stationarycoords[0].y() && y1 < stationarycoords[1].y()){
+            Direction v = movingobjs[i].getDirection();
+            float vx = v.x();
+            float vy = v.y();
+            float m = movingobjs[i].getSpeed();
+            float x3 = stationarycoords[j].x();
+            float y3 = stationarycoords[j].y();
+            float r1 = movingobjs[i].getRadius();
+            //Calc
+            double A = Math.pow(m, 2) * (Math.pow(vx, 2) + Math.pow(vy, 2));
+            double B = -2 * m * (vx * (x3 - x1) + vy * (y3 - y1));
+            double C = Math.pow((x3 - x1), 2) + Math.pow((y3 - y1), 2) - Math.pow((r1), 2);
+            double a1 = (-B + Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
+            double a2 = (-B - Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
+            if (a1 <= maxpercentage && a1 >= 0){
+              if (a2 <= maxpercentage && a2 >= 0)
+                pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1 < a2 ? a1 : a2));
+              else
+                pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1));
+            }
+            else if (a2 <= maxpercentage && a2 >= 0)
+              pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a2));
           }
-          else if (a2 <= maxpercentage && a2 >= 0)
-            pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a2));
         }
-        for(int j = 0; j < stationaryverticalwalls.length; i++){
-          float m = movingobjs[i].getSpeed();
-          float vx = movingobjs[i].getDirection().x();
-          float r = movingobjs[i].getRadius();
-          float x1 = movingobjs[i].getPosition().x();
-          float wx = stationaryverticalwalls[j];
-          float a = (wx - x1 - r) / (vx * m);
-          if (a <= maxpercentage && a >= 0)
-            pqueue.add(new Collisionpair(movingobjs[i], null, null, stationaryverticalwalls[j], Collision.VERTWALL, a));
+        for(int j = 0; j < stationaryverticalwalls.length && !(i == 2 && j == 1); i++){
+          float y1 = movingobjs[i].getPosition().x();
+          if (!(movingobjs[i].getClass() == Puck.class && y1 > stationarycoords[0].y() && y1 < stationarycoords[1].y())){
+            float m = movingobjs[i].getSpeed();
+            float vx = movingobjs[i].getDirection().x();
+            float r = movingobjs[i].getRadius();
+            float x1 = movingobjs[i].getPosition().x();
+            float wx = stationaryverticalwalls[j];
+            float a = (wx - x1 - r) / (vx * m);
+            if (a <= maxpercentage && a >= 0)
+              pqueue.add(new Collisionpair(movingobjs[i], null, null, stationaryverticalwalls[j], Collision.VERTWALL, a));
+          }
         }
         for(int j = 0; j < stationaryhorizontalwalls.length; i++){
           float m = movingobjs[i].getSpeed();

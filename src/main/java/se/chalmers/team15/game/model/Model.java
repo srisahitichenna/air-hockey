@@ -1,5 +1,7 @@
 package se.chalmers.team15.game.model;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 public class Model {
@@ -74,17 +76,17 @@ public class Model {
     }
 
     /* Movement */
-    moveObjects(objs, dt);
+    //moveObjects(objs, dt);
     addInputs();
-
+    accurateCollisionsAndMovementWithFriction(dt);
     /* Wall collision */
-    wallCollision(objs);
+    //wallCollision(objs);
 
     /* Striker-Puck collision */
-    hitPuck(objs);
+    //hitPuck(objs);
 
     /* Friction */
-    friction(objs);
+    //friction(objs);
 
     // put small invisible "striker" on all sharp corners to bounce against
   }
@@ -107,6 +109,118 @@ public class Model {
       float dirY = objects[i].getDirection().y();
       float speed = objects[i].getSpeed();
       objects[i].setPosition(pos.moveBy(new Direction(dirX * speed, dirY * speed), dt));
+    }
+  }
+
+  private void accurateCollisionsAndMovementWithFriction(float dt){
+    record Collisionpair(movable o1, movable o2, Position pos, Float xory, Collision collisiontype, double percentage){}
+    PriorityQueue<Collisionpair> pqueue = new PriorityQueue<>(Comparator.comparingDouble(entry -> entry.percentage()));
+    movable[] movingobjs = objs;
+    Position[] stationarycoords = new Position[4];
+    float[] stationaryverticalwalls = new float[3];
+    float[] stationaryhorizontalwalls = new float[2];
+    //change to real values
+    stationarycoords[0] = new Position(1, 2);
+    stationarycoords[1] = new Position(2, 2);
+    stationarycoords[2] = new Position(3, 3);
+    stationarycoords[3] = new Position(4, 4);
+    stationaryverticalwalls[0] = 1;
+    stationaryverticalwalls[1] = 2;
+    stationaryverticalwalls[2] = 3;
+    stationaryhorizontalwalls[0] = 0;
+    stationaryhorizontalwalls[1] = 1;
+    //
+    pqueue.add(new Collisionpair(null, null, null, null, null, 1));
+    while(!pqueue.isEmpty()) {
+      for(int i = 0; i < movingobjs.length; i++){
+        for(int j = 0; j < movingobjs.length && i < j; i++){
+          //Vars
+          Direction v2 = movingobjs[j].getDirection();
+          float v2x = v2.x();
+          float v2y = v2.y();
+          float m2 = movingobjs[j].getSpeed();
+          Direction v = movingobjs[i].getDirection();
+          float vx = v.x();
+          float vy = v.y();
+          float m = movingobjs[i].getSpeed();
+          float x3 = movingobjs[j].getPosition().x();
+          float y3 = movingobjs[j].getPosition().y();
+          float x1 = movingobjs[i].getPosition().x();
+          float y1 = movingobjs[i].getPosition().y();
+          float r1 = movingobjs[i].getRadius();
+          float r2 = movingobjs[j].getRadius();
+          //Calc
+          double A = Math.pow((v2x*m2 - vx*m), 2) + Math.pow((v2y*m2 - vy*m), 2);
+          double B = 2*(x3 - x1)*(v2x*m2 - vx*m) + 2*(y3 - y1)*(v2y*m2 - vy*m);
+          double C = Math.pow((x3 - x1), 2) + Math.pow((y3 - y1), 2) - Math.pow((r1 + r2), 2);
+          double a1 = (-B + Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
+          double a2 = (-B - Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
+          if (a1 <= 1 && a1 >= 0) {
+            if (a2 <= 1 && a2 >= 0)
+              pqueue.add(new Collisionpair(movingobjs[i], movingobjs[j], null, null, Collision.STATIONARY,
+                  a1 < a2 ? a1 : a2));
+            else
+              pqueue.add(new Collisionpair(movingobjs[i], movingobjs[j], null, null, Collision.STATIONARY, a1));
+          } else if (a2 <= 1 && a2 >= 0)
+            pqueue.add(new Collisionpair(movingobjs[i], movingobjs[j], null, null, Collision.STATIONARY, a2));
+        }
+        for(int j = 0; j < stationarycoords.length; i++){
+          //Vars
+          Direction v = movingobjs[i].getDirection();
+          float vx = v.x();
+          float vy = v.y();
+          float m = movingobjs[i].getSpeed();
+          float x3 = stationarycoords[j].x();
+          float y3 = stationarycoords[j].y();
+          float x1 = movingobjs[i].getPosition().x();
+          float y1 = movingobjs[i].getPosition().y();
+          float r1 = movingobjs[i].getRadius();
+          //Calc
+          double A = Math.pow(m, 2) * (Math.pow(vx, 2) + Math.pow(vy, 2));
+          double B = -2 * m * (vx * (x3 - x1) + vy * (y3 - y1));
+          double C = Math.pow((x3 - x1), 2) + Math.pow((y3 - y1), 2) - Math.pow((r1), 2);
+          double a1 = (-B + Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
+          double a2 = (-B - Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
+          if (a1 <= 1 && a1 >= 0){
+            if (a2 <= 1 && a2 >= 0)
+              pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1 < a2 ? a1 : a2));
+            else
+              pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1));
+          }
+          else if (a2 <= 1 && a2 >= 0)
+            pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a2));
+        }
+        for(int j = 0; j < stationaryverticalwalls.length; i++){
+          float m = movingobjs[i].getSpeed();
+          float vx = movingobjs[i].getDirection().x();
+          float r = movingobjs[i].getRadius();
+          float x1 = movingobjs[i].getPosition().x();
+          float wx = stationaryverticalwalls[j];
+          float a = (wx - x1 - r) / (vx * m);
+          if (a <= 1 && a >= 0)
+            pqueue.add(new Collisionpair(movingobjs[i], null, null, stationaryverticalwalls[j], Collision.VERTWALL, a));
+        }
+        for(int j = 0; j < stationaryhorizontalwalls.length; i++){
+          float m = movingobjs[i].getSpeed();
+          float vy = movingobjs[i].getDirection().y();
+          float r = movingobjs[i].getRadius();
+          float y1 = movingobjs[i].getPosition().y();
+          float wy = stationaryhorizontalwalls[j];
+          float a = (wy - y1 - r) / (vy * m);
+          if (a <= 1 && a >= 0)
+            pqueue.add(new Collisionpair(movingobjs[i], null, null, stationaryhorizontalwalls[j], Collision.VERTWALL, a));
+        }
+      }
+      switch(pqueue.remove().collisiontype()){
+        case MOOVING:
+          break;
+        case STATIONARY:
+          break;
+        case VERTWALL:
+          break;
+        case HORIZWALL:
+          break;
+      }
     }
   }
 

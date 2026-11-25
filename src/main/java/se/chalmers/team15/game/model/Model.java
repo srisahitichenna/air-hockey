@@ -7,6 +7,7 @@ import java.util.Random;
 public class Model {
 
   private int MATCH_LENGTH = 180; // 3 min match length
+  private float Friktionskoefficient = 0.99f;
 
   private final Rink rink = new Rink(1600, 800, 80);
   private final Puck puck = new Puck(900, 450);
@@ -102,13 +103,13 @@ public class Model {
     }
   }
 
-  private <T extends movable> void moveObjects(T[] objects, float dt) {
-    for (int i = 0; i < objects.length; i++) {
-      Position pos = objects[i].getPosition();
-      float dirX = objects[i].getDirection().x();
-      float dirY = objects[i].getDirection().y();
-      float speed = objects[i].getSpeed();
-      objects[i].setPosition(pos.moveBy(new Direction(dirX * speed, dirY * speed), dt));
+  private void moveObjects(double dt) {
+    for (int i = 0; i < objs.length; i++) {
+      Position pos = objs[i].getPosition();
+      float dirX = objs[i].getDirection().x();
+      float dirY = objs[i].getDirection().y();
+      float speed = objs[i].getSpeed();
+      objs[i].setPosition(pos.moveBy(new Direction(dirX * speed, dirY * speed), (float)dt));
     }
   }
 
@@ -130,8 +131,8 @@ public class Model {
     stationaryhorizontalwalls[0] = 0;
     stationaryhorizontalwalls[1] = 1;
     //
-    pqueue.add(new Collisionpair(null, null, null, null, null, 1));
-    while(!pqueue.isEmpty()) {
+    double maxpercentage = 1;
+    while(true) {
       for(int i = 0; i < movingobjs.length; i++){
         for(int j = 0; j < movingobjs.length && i < j; i++){
           //Vars
@@ -155,13 +156,12 @@ public class Model {
           double C = Math.pow((x3 - x1), 2) + Math.pow((y3 - y1), 2) - Math.pow((r1 + r2), 2);
           double a1 = (-B + Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
           double a2 = (-B - Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
-          if (a1 <= 1 && a1 >= 0) {
-            if (a2 <= 1 && a2 >= 0)
-              pqueue.add(new Collisionpair(movingobjs[i], movingobjs[j], null, null, Collision.STATIONARY,
-                  a1 < a2 ? a1 : a2));
+          if (a1 <= maxpercentage && a1 >= 0) {
+            if (a2 <= maxpercentage && a2 >= 0)
+              pqueue.add(new Collisionpair(movingobjs[i], movingobjs[j], null, null, Collision.STATIONARY, a1 < a2 ? a1 : a2));
             else
               pqueue.add(new Collisionpair(movingobjs[i], movingobjs[j], null, null, Collision.STATIONARY, a1));
-          } else if (a2 <= 1 && a2 >= 0)
+          } else if (a2 <= maxpercentage && a2 >= 0)
             pqueue.add(new Collisionpair(movingobjs[i], movingobjs[j], null, null, Collision.STATIONARY, a2));
         }
         for(int j = 0; j < stationarycoords.length; i++){
@@ -181,13 +181,13 @@ public class Model {
           double C = Math.pow((x3 - x1), 2) + Math.pow((y3 - y1), 2) - Math.pow((r1), 2);
           double a1 = (-B + Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
           double a2 = (-B - Math.sqrt(Math.pow(B, 2) - 4 * A * C)) / (2 * A);
-          if (a1 <= 1 && a1 >= 0){
-            if (a2 <= 1 && a2 >= 0)
+          if (a1 <= maxpercentage && a1 >= 0){
+            if (a2 <= maxpercentage && a2 >= 0)
               pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1 < a2 ? a1 : a2));
             else
               pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a1));
           }
-          else if (a2 <= 1 && a2 >= 0)
+          else if (a2 <= maxpercentage && a2 >= 0)
             pqueue.add(new Collisionpair(movingobjs[i], null, stationarycoords[j], null, Collision.STATIONARY, a2));
         }
         for(int j = 0; j < stationaryverticalwalls.length; i++){
@@ -197,7 +197,7 @@ public class Model {
           float x1 = movingobjs[i].getPosition().x();
           float wx = stationaryverticalwalls[j];
           float a = (wx - x1 - r) / (vx * m);
-          if (a <= 1 && a >= 0)
+          if (a <= maxpercentage && a >= 0)
             pqueue.add(new Collisionpair(movingobjs[i], null, null, stationaryverticalwalls[j], Collision.VERTWALL, a));
         }
         for(int j = 0; j < stationaryhorizontalwalls.length; i++){
@@ -207,21 +207,33 @@ public class Model {
           float y1 = movingobjs[i].getPosition().y();
           float wy = stationaryhorizontalwalls[j];
           float a = (wy - y1 - r) / (vy * m);
-          if (a <= 1 && a >= 0)
+          if (a <= maxpercentage && a >= 0)
             pqueue.add(new Collisionpair(movingobjs[i], null, null, stationaryhorizontalwalls[j], Collision.VERTWALL, a));
         }
       }
-      switch(pqueue.remove().collisiontype()){
+      if (pqueue.isEmpty())
+        break;
+      Collisionpair pair = pqueue.remove();
+      double a = pair.percentage();
+      maxpercentage -= a;
+      moveObjects(dt * a);
+      switch(pair.collisiontype()){
         case MOOVING:
+          //Two moovers hitting
           break;
         case STATIONARY:
+          //moover hitting corner
           break;
         case VERTWALL:
+          //moover hitting vertical wall
           break;
         case HORIZWALL:
+          //moover hitting horizontal wall
           break;
       }
     }
+    moveObjects(dt * maxpercentage);
+    friction();
   }
 
   private <T extends movable> void wallCollision(T[] objects) {
@@ -286,14 +298,9 @@ public class Model {
     }
   }
 
-  private <T extends movable> void friction(T[] objects) {
-    for (int i = 0; i < objects.length; i++) {
-      Direction direction = new Direction(
-          objects[i].getDirection().x() * objects[i].getSpeed() * 0.997f,
-          objects[i].getDirection().y() * objects[i].getSpeed() * 0.997f);
-      objects[i].setSpeed(direction.getMagnitudeAndNormalize());
-      objects[i].setDirection(direction);
-
+  private void friction() {
+    for (int i = 0; i < objs.length; i++) {
+      objs[i].setSpeed(objs[i].getSpeed() * Friktionskoefficient);
     }
   }
 

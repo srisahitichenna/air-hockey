@@ -6,7 +6,7 @@ public class Puck implements movable {
   private Position position;
   private Direction direction = new Direction(0, 0);
   private float speed = 0;
-  private float weight = 30;
+  private float weight = 1.007f;
 
   private static final float RADIUS = 30;
 

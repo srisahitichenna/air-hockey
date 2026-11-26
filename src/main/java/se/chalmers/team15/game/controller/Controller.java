@@ -1,7 +1,7 @@
 package se.chalmers.team15.game.controller;
 
 import static com.raylib.Raylib.*;
-
+import se.chalmers.team15.game.view.WinnerView;
 import se.chalmers.team15.game.model.Model;
 
 public class Controller {
@@ -14,6 +14,7 @@ public class Controller {
   private final int KEY_RIGHT;
   private final int KEY_UP;
   private final int KEY_DOWN;
+  private final WinnerView winnerView;
 
   public Controller(
       Model model, int strikerNr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
@@ -23,9 +24,19 @@ public class Controller {
     this.KEY_RIGHT = KEY_RIGHT;
     this.KEY_UP = KEY_UP;
     this.KEY_DOWN = KEY_DOWN;
+    this.winnerView = winnerView;
   }
 
   public void update() {
+    if (model.getTimer().isFinished()) {
+
+      if (winnerView.isPlayAgainClicked()) {
+        model.startMatch();
+      }
+
+      return;
+    }
+
     processInput();
   }
 

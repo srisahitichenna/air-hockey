@@ -4,7 +4,7 @@ public class Striker implements movable {
   private Position position;
   private Direction direction = new Direction(0, 0);
   private float speed = 0;
-  private float weight = 100;
+  private float weight = 1;
 
   private static final float RADIUS = 50;
 

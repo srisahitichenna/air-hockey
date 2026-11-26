@@ -9,17 +9,24 @@ import static com.raylib.Raylib.GetScreenHeight;
 import static com.raylib.Raylib.GetScreenWidth;
 import static com.raylib.Raylib.MeasureText;
 
+import se.chalmers.team15.game.model.Button;
 import se.chalmers.team15.game.model.Model;
 
 public class WinnerView {
 
+  private Button playAgainButton;
+
+  public WinnerView() {
+    playAgainButton = new Button(
+        800, 600, 200, 60, "Play Again");
+  }
+
   public void drawWinner(Model model) {
-    String text =
-        switch (model.getWinner()) {
-          case PLAYER1 -> "PLAYER 1 WINS!";
-          case PLAYER2 -> "PLAYER 2 WINS!";
-          case DRAW -> "IT'S A DRAW!";
-        };
+    String text = switch (model.getWinner()) {
+      case PLAYER1 -> "PLAYER 1 WINS!";
+      case PLAYER2 -> "PLAYER 2 WINS!";
+      case DRAW -> "IT'S A DRAW!";
+    };
 
     int fontsize = 120;
     int x = (GetScreenWidth() - MeasureText(text, fontsize)) / 2;
@@ -27,5 +34,11 @@ public class WinnerView {
 
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.6f));
     DrawText(text, x, y, fontsize, WHITE);
+
+    playAgainButton.draw();
+  }
+
+  public boolean isPlayAgainClicked() {
+    return playAgainButton.isClicked();
   }
 }

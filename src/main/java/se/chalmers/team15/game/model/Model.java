@@ -1,6 +1,8 @@
 package se.chalmers.team15.game.model;
 
+import java.sql.Time;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Model {
   private int MATCH_LENGTH = 180; // 3 min match length
@@ -62,17 +64,10 @@ public class Model {
   }
 
   /** Advances the simulation by {@code dt} seconds. */
-  public void update(
-      float dt) { // move -> input -> collision? -> speed&direction // speed&direction kan
-    // bestämmas för nästa frame och visas
+  public void update(float dt) {
 
     /* Timer */
     timer.update(dt);
-    if (timer.isFinished()) {
-      // stop puck and players
-      // announce winner
-      return;
-    }
 
     /* Movement */
     moveObjects(objs, dt);
@@ -87,8 +82,6 @@ public class Model {
 
     /* Friction */
     friction(objs);
-
-    // put small invisible "striker" on all sharp corners to bounce against
   }
 
   private void addInputs() {
@@ -103,6 +96,7 @@ public class Model {
   }
 
   private <T extends movable> void moveObjects(T[] objects, float dt) {
+    final float maxSpeed = 1000f;
     for (int i = 0; i < objects.length; i++) { // 1 is number of pucks
       objects[i].setPosition(
           objects[i]
@@ -112,6 +106,9 @@ public class Model {
                       objects[i].getDirection().x() * objects[i].getSpeed(),
                       objects[i].getDirection().y() * objects[i].getSpeed()),
                   dt));
+      if (objects[i].getSpeed() > maxSpeed) {
+        objects[i].setSpeed(maxSpeed);
+      }
     }
   }
 
@@ -194,12 +191,7 @@ public class Model {
 
   private <T extends movable> void friction(T[] objects) {
     for (int i = 0; i < objects.length; i++) {
-      Direction direction =
-          new Direction(
-              objects[i].getDirection().x() * objects[i].getSpeed() * 0.997f,
-              objects[i].getDirection().y() * objects[i].getSpeed() * 0.997f);
-      objects[i].setSpeed(direction.getMagnitudeAndNormalize());
-      objects[i].setDirection(direction);
+      objects[i].setSpeed(objects[i].getSpeed() * 0.99f * objects[i].getWeight());
     }
   }
 

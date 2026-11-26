@@ -93,6 +93,7 @@ public class Model {
   }
 
   private <T extends movable> void moveObjects(T[] objects, float dt) {
+    final float maxSpeed = 1000f;
     for (int i = 0; i < objects.length; i++) { // 1 is number of pucks
       objects[i].setPosition(
           objects[i]
@@ -102,6 +103,9 @@ public class Model {
                       objects[i].getDirection().x() * objects[i].getSpeed(),
                       objects[i].getDirection().y() * objects[i].getSpeed()),
                   dt));
+      if (objects[i].getSpeed() > maxSpeed) {
+        objects[i].setSpeed(maxSpeed);
+      }
     }
   }
 

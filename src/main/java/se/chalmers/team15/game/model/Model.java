@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Model {
-
   private int MATCH_LENGTH = 180; // 3 min match length
 
   private final Rink rink = new Rink(1600, 800, 80);
@@ -167,26 +166,23 @@ public class Model {
     }
   }
 
-    private void checkGoals() {
-        Rink.GoalSide goal = rink.checkGoal(puck.getPosition());   // use getPuck().getPosition() if you have no `puck` field
-        if (goal == Rink.GoalSide.NONE) return;
+  private void checkGoals() {
+    Rink.GoalSide goal = rink.checkGoal(puck.getPosition()); // use getPuck().getPosition() if you have no `puck` field
+    if (goal == Rink.GoalSide.NONE)
+      return;
 
+    if (goal == Rink.GoalSide.LEFT)
+      score.addPlayer2(); // right player scored
+    else
+      score.addPlayer1(); // left player scored
 
-        if (goal == Rink.GoalSide.LEFT) score.addPlayer2();   // right player scored
-        else score.addPlayer1();   // left player scored
-
-        puck.setPosition(new Position(rink.getWidth() / 2f, rink.getHeight() / 2f));
-        puck.setSpeed(0);
-    }
+    puck.setPosition(new Position(rink.getWidth() / 2f, rink.getHeight() / 2f));
+    puck.setSpeed(0);
+  }
 
   private <T extends movable> void friction(T[] objects) {
     for (int i = 0; i < objects.length; i++) {
-      Direction direction = new Direction(
-          objects[i].getDirection().x() * objects[i].getSpeed() * 0.997f,
-          objects[i].getDirection().y() * objects[i].getSpeed() * 0.997f);
-      objects[i].setSpeed(direction.getMagnitudeAndNormalize());
-      objects[i].setDirection(direction);
-
+      objects[i].setSpeed(objects[i].getSpeed() * 0.99f * objects[i].getWeight());
     }
   }
 
@@ -216,10 +212,11 @@ public class Model {
 
   public Winner getWinner() {
     if ((int) score.getPlayer1Score() == (int) score.getPlayer2Score()) {
-      return Winner.DRAW; } 
-    else if ((int) score.getPlayer1Score() > (int) score.getPlayer2Score()) {
-      return Winner.PLAYER1; }
+      return Winner.DRAW;
+    } else if ((int) score.getPlayer1Score() > (int) score.getPlayer2Score()) {
+      return Winner.PLAYER1;
+    }
     return Winner.PLAYER2;
-  
-}
+
+  }
 }

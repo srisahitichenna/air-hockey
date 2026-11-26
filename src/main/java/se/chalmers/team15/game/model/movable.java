@@ -2,22 +2,22 @@ package se.chalmers.team15.game.model;
 
 public interface movable {
 
-    // Getters
-    public Position getPosition();
+  // Getters
+  public Position getPosition();
 
-    public void setPosition(Position position);
+  public void setPosition(Position position);
 
-    public Direction getDirection();
+  public Direction getDirection();
 
-    public void setDirection(Direction direction);
+  public void setDirection(Direction direction);
 
-    public float getRadius();
+  public float getRadius();
 
-    public float getSpeed();
+  public float getSpeed();
 
-    public void setSpeed(float newspeed);
+  public void setSpeed(float newspeed);
 
-    public float getWeight();
+  public float getWeight();
 
-    public void setWeight(float newWeight);
+  public void setWeight(float newWeight);
 }

@@ -15,26 +15,8 @@ public class Controller {
   private final int KEY_UP;
   private final int KEY_DOWN;
 
-  /*
-   * private enum Key {
-   * LEFT(KEY_LEFT, -1, 0),
-   * RIGHT(KEY_RIGHT, 1, 0),
-   * UP(KEY_UP, 0, -1),
-   * DOWN(KEY_DOWN, 0, 1);
-   * 
-   * private final int raylibCode;
-   * private final float xVel;
-   * private final float yVel;
-   * 
-   * Key(int raylibCode, int xVel, int yVel) {
-   * this.raylibCode = raylibCode;
-   * this.xVel = xVel * SPEED;
-   * this.yVel = yVel * SPEED;
-   * }
-   * }
-   */
-
-  public Controller(Model model, int strikerNr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
+  public Controller(
+      Model model, int strikerNr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
     this.strikerNr = strikerNr;
     this.model = model;
     this.KEY_LEFT = KEY_LEFT;

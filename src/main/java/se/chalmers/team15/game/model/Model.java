@@ -7,8 +7,10 @@ import java.util.concurrent.TimeUnit;
 public class Model {
   private int MATCH_LENGTH = 180; // 3 min match length
 
-  private final Rink rink = new Rink(1600, 800, 80);
-  private final Puck puck = new Puck(900, 450);
+  private final Rink rink = new Rink(100, 50, 1600, 800, 80);
+  final float centerY = rink.getCenterY();
+
+  private final Puck puck = new Puck(900, centerY);
   private final Score score = new Score();
   private final Timer timer = new Timer(MATCH_LENGTH);
 
@@ -43,13 +45,13 @@ public class Model {
     return players[1];
   }
 
-  public void goalRight() {
+/*   public void goalRight() {
     score.addPlayer1();
   }
 
   public void goalLeft() {
     score.addPlayer2();
-  }
+  } */
 
   public Timer getTimer() {
     return timer;
@@ -84,9 +86,10 @@ public class Model {
 
   private void addInputs() {
     for (int i = 0; i < players.length; i++) {
-      Direction velocity = new Direction(
-          players[i].getDirection().x() * players[i].getSpeed() + inputs[i].x(),
-          players[i].getDirection().y() * players[i].getSpeed() + inputs[i].y());
+      Direction velocity =
+          new Direction(
+              players[i].getDirection().x() * players[i].getSpeed() + inputs[i].x(),
+              players[i].getDirection().y() * players[i].getSpeed() + inputs[i].y());
       players[i].setSpeed(velocity.getMagnitudeAndNormalize());
       players[i].setDirection(velocity);
     }
@@ -110,18 +113,23 @@ public class Model {
   }
 
   private <T extends movable> void wallCollision(T[] objects) {
-    final int topwall = 50;
-    final int middlewall = 900;
-    final int bottomwall = 850;
-    final int leftwall = 100;
-    final int rightwall = 1700;
-    final int goalsize = 200;
+    final float topwall = rink.getTop();
+    final float bottomwall = rink.getBottom();
+    final float leftwall = rink.getLeft();
+    final float rightwall = rink.getRight();
+    final float middlewall = rink.getCenterX();
+    final float centerY = rink.getCenterY();
+    final float goalHalf = rink.getGoalHalfHeight();
+
     for (int i = 0; i < objects.length; i++) {
       float x = objects[i].getPosition().x();
       float y = objects[i].getPosition().y();
       float dirX = objects[i].getDirection().x();
       float dirY = objects[i].getDirection().y();
       float radius = objects[i].getRadius();
+
+      boolean puckInGoal =
+        objects[i] instanceof Puck && Math.abs(y - centerY) < goalHalf;
 
       if (y <= topwall + radius) {
         objects[i].setDirection(new Direction(dirX, Math.abs(dirY)));
@@ -131,12 +139,10 @@ public class Model {
         objects[i].setPosition(new Position(x, bottomwall - radius));
       }
 
-      if (x <= leftwall + radius
-          && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+      if (x <= leftwall + radius && !puckInGoal) {
         objects[i].setDirection(new Direction(Math.abs(dirX), dirY));
         objects[i].setPosition(new Position(leftwall + radius, y));
-      } else if (x >= rightwall - radius
-          && !((y < 450 + goalsize / 2 && y > 450 - goalsize / 2) && objects[i].getClass() == Puck.class)) {
+      } else if (x >= rightwall - radius && !puckInGoal) {
         objects[i].setDirection(new Direction(Math.abs(dirX) * -1, dirY));
         objects[i].setPosition(new Position(rightwall - radius, y));
       }
@@ -171,16 +177,15 @@ public class Model {
   }
 
   private void checkGoals() {
-    Rink.GoalSide goal = rink.checkGoal(puck.getPosition()); // use getPuck().getPosition() if you have no `puck` field
-    if (goal == Rink.GoalSide.NONE)
-      return;
+    Rink.GoalSide goal =
+        rink.checkGoal(
+            puck.getPosition()); // use getPuck().getPosition() if you have no `puck` field
+    if (goal == Rink.GoalSide.NONE) return;
 
-    if (goal == Rink.GoalSide.LEFT)
-      score.addPlayer2(); // right player scored
-    else
-      score.addPlayer1(); // left player scored
+    if (goal == Rink.GoalSide.LEFT) score.addPlayer2(); // right player scored
+    else score.addPlayer1(); // left player scored
 
-    puck.setPosition(new Position(rink.getWidth() / 2f, rink.getHeight() / 2f));
+    puck.setPosition(new Position(rink.getCenterX(), rink.getCenterY()));
     puck.setSpeed(0);
   }
 
@@ -190,24 +195,24 @@ public class Model {
     }
   }
 
-  public <T extends movable> void startMatch() {
+  public void startMatch() {
     /* Resets score */
     score.resetScore();
 
+    final float centerY = rink.getCenterY();
+
     /* Resets puck */
-    puck.setPosition(new Position(900, 450));
-    puck.setDirection(new Direction(0, 0));
+    puck.setPosition(new Position(rink.getCenterX(), centerY));
+    puck.setSpeed(0);
+    // reset speed of strikers?
 
     /* Resets strikers with random pos */
     Random random = new Random();
-    int Player1Pos;
-    int Player2Pos;
-    Player1Pos = random.nextInt(450, 550);
-    Player2Pos = random.nextInt(450, 550);
-    getPlayer1().setPosition(new Position(1350, Player2Pos));
-    getPlayer2().setPosition(new Position(450, Player1Pos));
-    getPlayer1().setDirection(new Direction(0, 0));
-    getPlayer2().setDirection(new Direction(0, 0));
+    float y1 = centerY + random.nextInt(-50, 50);
+    float y2 = centerY + random.nextInt(-50, 50);
+    float quarter = rink.getWidth() / 4f;
+    getPlayer1().setPosition(new Position(rink.getRight() - quarter, y1));
+    getPlayer2().setPosition(new Position(rink.getLeft() + quarter, y2));
 
     /* Resets timer, and starts timer */
     timer.resetTimer();
@@ -215,12 +220,11 @@ public class Model {
   }
 
   public Winner getWinner() {
-    if ((int) score.getPlayer1Score() == (int) score.getPlayer2Score()) {
+    if (score.getPlayer1Score() == score.getPlayer2Score()) {
       return Winner.DRAW;
-    } else if ((int) score.getPlayer1Score() > (int) score.getPlayer2Score()) {
+    } else if (score.getPlayer1Score() > score.getPlayer2Score()) {
       return Winner.PLAYER1;
     }
     return Winner.PLAYER2;
-
   }
 }

@@ -32,7 +32,6 @@ public class RinkView {
     DrawRectangleRounded(rec, roundness, 16, RAYWHITE);
     DrawRectangleRoundedLines(rec, roundness, 16, BLACK);
 
-
     int midX = (int) (offsetX + rink.getWidth() / 2f);
     int top = (int) offsetY;
     int bottom = (int) (offsetY + rink.getHeight());
@@ -46,7 +45,15 @@ public class RinkView {
     DrawRectangle((midX / 2) - 1, top, 2, bottom - top, BLUE);
     DrawRectangle((3 * midX / 2) - 1, top, 2, bottom - top, BLUE);
 
-    DrawCircleLines((GetScreenWidth() -(int) rink.getWidth())/2,(top+bottom)/2, rink.getGoalRadius(), RED);
-    DrawCircleLines((int) rink.getWidth() + (GetScreenWidth() -(int) rink.getWidth())/2,(top+bottom)/2, rink.getGoalRadius(), RED);
+    DrawCircleLines(
+        (GetScreenWidth() - (int) rink.getWidth()) / 2,
+        (top + bottom) / 2,
+        rink.getGoalHalfHeight(),
+        RED);
+    DrawCircleLines(
+        (int) rink.getWidth() + (GetScreenWidth() - (int) rink.getWidth()) / 2,
+        (top + bottom) / 2,
+        rink.getGoalHalfHeight(),
+        RED);
   }
 }

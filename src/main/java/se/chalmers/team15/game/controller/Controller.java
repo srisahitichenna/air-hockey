@@ -1,8 +1,9 @@
 package se.chalmers.team15.game.controller;
 
 import static com.raylib.Raylib.*;
-import se.chalmers.team15.game.view.WinnerView;
+
 import se.chalmers.team15.game.model.Model;
+import se.chalmers.team15.game.view.WinnerView;
 
 public class Controller {
   /** Speed while an arrow key is held, in pixels per second. */
@@ -17,7 +18,13 @@ public class Controller {
   private final WinnerView winnerView;
 
   public Controller(
-      Model model, int strikerNr, int KEY_LEFT, int KEY_RIGHT, int KEY_UP, int KEY_DOWN) {
+      Model model,
+      int strikerNr,
+      int KEY_LEFT,
+      int KEY_RIGHT,
+      int KEY_UP,
+      int KEY_DOWN,
+      WinnerView winnerView) {
     this.strikerNr = strikerNr;
     this.model = model;
     this.KEY_LEFT = KEY_LEFT;
